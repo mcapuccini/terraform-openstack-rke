@@ -52,5 +52,5 @@ variable role {
 
 variable labels {
   type        = "map"
-  description = "Map of Kubernetes labels form this node"
+  description = "Map of Kubernetes labels for this node"
 }
