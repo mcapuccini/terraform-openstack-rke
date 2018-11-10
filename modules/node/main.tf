@@ -4,7 +4,6 @@ resource "openstack_compute_instance_v2" "instance" {
   name        = "${var.name_prefix}-${format("%03d", count.index)}"
   image_name  = "${var.image_name}"
   flavor_name = "${var.flavor_name}"
-  flavor_id   = "${var.flavor_id}"
 
   network {
     name = "${var.network_name}"
@@ -33,9 +32,24 @@ resource "openstack_blockstorage_volume_v2" "extra_disk" {
   size  = "${var.extra_disk_size}"
 }
 
-# Attach extra disk (if required), disk attaches as /dev/...
+# Attach extra disk (if required)
 resource "openstack_compute_volume_attach_v2" "attach_extra_disk" {
   count       = "${var.extra_disk_size > 0 ? var.count : 0}"
   instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
   volume_id   = "${element(openstack_blockstorage_volume_v2.extra_disk.*.id, count.index)}"
+}
+
+# Generate RKE node mappings
+resource "null_resource" "rke_node_mappings" {
+  count = "${var.count}"
+
+  triggers {
+    address           = "${var.assign_floating_ip ? element(openstack_compute_floatingip_v2.floating_ip.*.address, count.index) : element(openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4, count.index)}"
+    user              = "${var.ssh_user}"
+    ssh_key_path      = "${var.ssh_key}"
+    internal_address  = "${element(openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4, count.index)}"
+    hostname_override = "${element(openstack_compute_instance_v2.instance.*.name, count.index)}"
+    roles             = "${var.role}"
+    labels            = "${var.labels}"
+  }
 }

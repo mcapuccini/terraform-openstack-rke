@@ -18,6 +18,10 @@ variable ssh_user {
   description = "SSH user name"
 }
 
+variable ssh_key {
+  description = "Path to private SSH key"
+}
+
 variable network_name {
   description = "Name of the network to attach this node to"
 }
@@ -39,4 +43,14 @@ variable floating_ip_pool {
 variable extra_disk_size {
   description = "If greater than 0 a block storage volume will be attached to this node"
   default     = 0
+}
+
+variable role {
+  type        = "list"
+  description = "List of RKE-compliant roles for this node"
+}
+
+variable labels {
+  type        = "map"
+  description = "Map of Kubernetes labels form this node"
 }
