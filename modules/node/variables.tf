@@ -40,7 +40,7 @@ variable floating_ip_pool {
   default     = ""
 }
 
-variable extra_disk_size {
+variable block_storage_size {
   description = "If greater than 0 a block storage volume will be attached to this node"
   default     = 0
 }
@@ -53,4 +53,5 @@ variable role {
 variable labels {
   type        = "map"
   description = "Map of Kubernetes labels for this node"
+  default     = {}
 }

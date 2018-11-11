@@ -1,4 +1,9 @@
-output rke_node_mappings {
-  description = "RKE node mappings as a list of maps"
-  value = "${null_resource.rke_node_mappings.*.triggers}"
+output node_mappings {
+  description = "RKE node mappings"
+  value       = ["${data.rke_node_parameter.node_mappings.*.json}"]
+}
+
+output "public_ip_list" {
+  description = "List of floating IP addresses (one per node)"
+  value       = ["${openstack_compute_floatingip_v2.floating_ip.*.address}"]
 }
