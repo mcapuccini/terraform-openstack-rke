@@ -57,6 +57,15 @@ resource rke_cluster "cluster" {
   bastion_host = {
     address = "${element(module.master.public_ip_list,0)}"
     user    = "${var.ssh_user}"
-    ssh_key = "${var.ssh_key}"
+    ssh_key_path = "${var.ssh_key}"
+    port         = 22
   }
+
+  ignore_docker_version = true
+}
+
+# Write kubeconfig.yaml
+resource "local_file" "kube_cluster_yaml" {
+  filename = "./kubeconfig.yml"
+  content  = "${rke_cluster.cluster.kube_config_yaml}"
 }
