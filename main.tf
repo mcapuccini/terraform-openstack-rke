@@ -30,7 +30,7 @@ module "master" {
   ssh_user = "${var.ssh_user}"
   ssh_key = "${var.ssh_key}"
   role               = ["controlplane", "etcd"]
-  assign_floating_ip = "true"
+  assign_floating_ip = true
 }
 
 # Create worker nodes
@@ -50,7 +50,7 @@ module "worker" {
 
 # Provision RKE
 resource rke_cluster "cluster" {
-  nodes_conf = "${join(module.master.node_mappings,module.worker.node_mappings)}"
+  nodes_conf = ["${concat(module.master.node_mappings,module.worker.node_mappings)}"]
 
   bastion_host = {
     address = "${element(module.master.public_ip_list,0)}"

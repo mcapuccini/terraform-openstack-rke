@@ -40,10 +40,15 @@ resource "openstack_compute_volume_attach_v2" "attach_extra_disk" {
 }
 
 # RKE node mappings
-data "rke_node_parameter" "node_mappings" {
+locals {
+  # Workaround for list not supported in conditionals (https://github.com/hashicorp/terraform/issues/12453)
+  address_list = ["${split(",", var.assign_floating_ip ? join(",", openstack_compute_floatingip_v2.floating_ip.*.address) : join(",", openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4))}"]
+}
+
+data rke_node_parameter "node_mappings" {
   count = "${var.count}"
 
-  address           = "${var.assign_floating_ip ? element(openstack_compute_floatingip_v2.floating_ip.*.address, count.index) : element(openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4, count.index)}"
+  address           = "${element(local.address_list, count.index)}"
   user              = "${var.ssh_user}"
   ssh_key_path      = "${var.ssh_key}"
   internal_address  = "${element(openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4, count.index)}"
