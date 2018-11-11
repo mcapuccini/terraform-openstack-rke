@@ -48,6 +48,6 @@ data "rke_node_parameter" "node_mappings" {
   ssh_key_path      = "${var.ssh_key}"
   internal_address  = "${element(openstack_compute_instance_v2.instance.*.network.0.fixed_ip_v4, count.index)}"
   hostname_override = "${element(openstack_compute_instance_v2.instance.*.name, count.index)}"
-  roles             = "${var.role}"
+  role              = "${var.role}"
   labels            = "${var.labels}"
 }

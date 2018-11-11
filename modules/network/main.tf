@@ -14,7 +14,7 @@ resource "openstack_networking_subnet_v2" "subnet" {
 
 resource "openstack_networking_router_v2" "router" {
   name             = "${var.name_prefix}-router"
-  external_gateway = "${var.external_net_uuid}"
+  external_network_id = "${var.external_net_uuid}"
 }
 
 resource "openstack_networking_router_interface_v2" "interface" {
