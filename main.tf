@@ -29,6 +29,7 @@ module "master" {
   floating_ip_pool   = "${var.floating_ip_pool}"
   ssh_user = "${var.ssh_user}"
   ssh_key = "${var.ssh_key}"
+  ssh_keypair = "${openstack_compute_keypair_v2.keypair.name}"
   role               = ["controlplane", "etcd"]
   assign_floating_ip = true
 }
@@ -45,6 +46,7 @@ module "worker" {
   floating_ip_pool = "${var.floating_ip_pool}"
   ssh_user = "${var.ssh_user}"
   ssh_key = "${var.ssh_key}"
+  ssh_keypair = "${openstack_compute_keypair_v2.keypair.name}"
   role             = ["worker"]
 }
 

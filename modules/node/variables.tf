@@ -22,6 +22,10 @@ variable ssh_key {
   description = "Path to private SSH key"
 }
 
+variable ssh_keypair {
+  description = "SSH keypair to inject in the instance (previosly created in OpenStack)"
+}
+
 variable network_name {
   description = "Name of the network to attach this node to"
 }
