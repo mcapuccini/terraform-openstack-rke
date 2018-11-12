@@ -14,7 +14,7 @@ module "secgroup" {
 module "network" {
   source            = "modules/network"
   name_prefix       = "${var.cluster_prefix}"
-  external_net_uuid = "${var.external_net_uuid}"
+  external_network_id = "${var.external_network_id}"
 }
 
 # Create master node

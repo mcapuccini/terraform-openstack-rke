@@ -7,7 +7,7 @@ variable subnet_cidr {
   default     = "10.0.0.0/16"
 }
 
-variable external_net_uuid {
+variable external_network_id {
   description = "External network UUID"
 }
 

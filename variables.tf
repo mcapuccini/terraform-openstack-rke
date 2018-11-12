@@ -15,8 +15,8 @@ variable ssh_user {
   description = "SSH user name (use the default user for the OS image)"
 }
 
-variable external_net_uuid {
-  description = "External network UUID"
+variable external_network_id {
+  description = "External network ID"
 }
 
 variable floating_ip_pool {
