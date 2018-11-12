@@ -26,20 +26,6 @@ resource "openstack_compute_floatingip_associate_v2" "floating_ip" {
   instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
 }
 
-# Create block storage (if required)
-resource "openstack_blockstorage_volume_v2" "extra_disk" {
-  count = "${var.block_storage_size > 0 ? var.count : 0}"
-  name  = "${var.name_prefix}-volume-${format("%03d", count.index)}"
-  size  = "${var.block_storage_size}"
-}
-
-# Attach extra disk (if required)
-resource "openstack_compute_volume_attach_v2" "attach_extra_disk" {
-  count       = "${var.block_storage_size > 0 ? var.count : 0}"
-  instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
-  volume_id   = "${element(openstack_blockstorage_volume_v2.extra_disk.*.id, count.index)}"
-}
-
 # RKE node mappings
 locals {
   # Workaround for list not supported in conditionals (https://github.com/hashicorp/terraform/issues/12453)

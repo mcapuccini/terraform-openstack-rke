@@ -20,7 +20,7 @@ module "network" {
 # Create master node
 module "master" {
   source             = "modules/node"
-  count              = "1"
+  count              = "${var.master_count}"
   name_prefix        = "${var.cluster_prefix}-master"
   flavor_name        = "${var.master_flavor_name}"
   image_name         = "${var.image_name}"

@@ -44,11 +44,6 @@ variable floating_ip_pool {
   default     = ""
 }
 
-variable block_storage_size {
-  description = "If greater than 0 a block storage volume will be attached to this node"
-  default     = 0
-}
-
 variable role {
   type        = "list"
   description = "List of RKE-compliant roles for this node"
