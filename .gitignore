@@ -1,9 +1,6 @@
-#  Local .terraform directories
 **/.terraform/*
-
-# .tfstate files
 *.tfstate
 *.tfstate.*
-
-# .tfvars files
 *.tfvars
+kubeconfig.yml
+terraform-provider-rke-*
