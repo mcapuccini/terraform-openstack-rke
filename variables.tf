@@ -1,3 +1,4 @@
+# Cluster
 variable cluster_prefix {
   description = "Name prefix for the cluster resources"
   default     = "rke"
@@ -27,6 +28,7 @@ variable image_name {
   description = "Name of an image to boot the nodes from (OS shold be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/)"
 }
 
+# Nodes
 variable master_flavor_name {
   description = "Master node flavor name"
 }
@@ -43,4 +45,10 @@ variable worker_flavor_name {
 variable worker_count {
   description = "Number of workers to deploy"
   default = 2
+}
+
+# RKE
+variable ignore_docker_version {
+  description = "If true RKE won't check Docker version on images"
+  default = false
 }

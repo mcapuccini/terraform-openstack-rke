@@ -61,7 +61,7 @@ resource rke_cluster "cluster" {
     port         = 22
   }
 
-  ignore_docker_version = true
+  ignore_docker_version = "${var.ignore_docker_version}"
 }
 
 # Write kubeconfig.yaml
