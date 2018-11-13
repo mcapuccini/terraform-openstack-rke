@@ -46,6 +46,13 @@ module "rke" {
   worker_flavor_name="" # Worker node flavor name
   worker_count=2 # Number of workers to deploy
   ignore_docker_version=false # If true RKE won't check Docker version
+}
+```
+
+Init the Terraform directory by running:
+
+```
+terraform init
 ```
 
 ## Deploy
