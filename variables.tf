@@ -25,7 +25,7 @@ variable floating_ip_pool {
 }
 
 variable image_name {
-  description = "Name of an image to boot the nodes from (OS shold be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/)"
+  description = "Name of an image to boot the nodes from (OS should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/)"
 }
 
 # Nodes
