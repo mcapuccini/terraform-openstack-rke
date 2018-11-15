@@ -13,7 +13,7 @@ resource "openstack_networking_subnet_v2" "subnet" {
 }
 
 resource "openstack_networking_router_v2" "router" {
-  name             = "${var.name_prefix}-router"
+  name                = "${var.name_prefix}-router"
   external_network_id = "${var.external_network_id}"
 }
 

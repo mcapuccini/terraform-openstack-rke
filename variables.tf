@@ -35,7 +35,7 @@ variable master_flavor_name {
 
 variable master_count {
   description = "Number of masters to deploy"
-  default = 1
+  default     = 1
 }
 
 variable worker_flavor_name {
@@ -44,11 +44,11 @@ variable worker_flavor_name {
 
 variable worker_count {
   description = "Number of workers to deploy"
-  default = 2
+  default     = 2
 }
 
 # RKE
 variable ignore_docker_version {
   description = "If true RKE won't check Docker version on images"
-  default = false
+  default     = false
 }
