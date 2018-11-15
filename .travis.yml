@@ -1,0 +1,35 @@
+---
+language: python
+
+sudo: required
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+
+env:
+  global:
+    # Software versions
+    - TERRAFORM_VERSION=0.11.10
+    - YAMLLINT_VERSION=1.8.1
+
+install:
+  # Pull deps
+  - docker pull "hashicorp/terraform:$TERRAFORM_VERSION"
+  - docker pull "boiyaa/yamllint:$YAMLLINT_VERSION"
+  # Set up SSH key
+  - ssh-keygen -t rsa -N '' -f ssh_key
+  - ssh-add ssh_key
+
+script:
+  # Terraform init, validate, and format check
+  - docker run -v "$PWD:/hostdir" -w /hostdir "hashicorp/terraform:$TERRAFORM_VERSION" init
+  - docker run -v "$PWD:/hostdir" -w /hostdir --env-file <(env) "hashicorp/terraform:$TERRAFORM_VERSION" validate
+  - docker run -v "$PWD:/hostdir" -w /hostdir "hashicorp/terraform:$TERRAFORM_VERSION" fmt -check=true -diff
+  # Check scripts
+  - git diff --exit-code
+  # Check YAMLs
+  - docker run -v "$PWD:/workdir" "boiyaa/yamllint:$YAMLLINT_VERSION" -c .yamllint.yml -s $(find . -type f -name '*.yml')
