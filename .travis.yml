@@ -20,9 +20,6 @@ install:
   # Pull deps
   - docker pull "hashicorp/terraform:$TERRAFORM_VERSION"
   - docker pull "boiyaa/yamllint:$YAMLLINT_VERSION"
-  # Set up SSH key
-  - ssh-keygen -t rsa -N '' -f ssh_key
-  - ssh-add ssh_key
 
 script:
   # Terraform init, validate, and format check
