@@ -13,19 +13,19 @@ branches:
 env:
   global:
     # Software versions
-    - TERRAFORM_VERSION=0.11.10
+    - RKE_PROVIDER_VERSION=0.5.0
     - YAMLLINT_VERSION=1.8.1
 
 install:
   # Pull deps
-  - docker pull "hashicorp/terraform:$TERRAFORM_VERSION"
+  - docker pull "yamamotofebc/terraform-provider-rke:$RKE_PROVIDER_VERSION"
   - docker pull "boiyaa/yamllint:$YAMLLINT_VERSION"
 
 script:
   # Terraform init, validate, and format check
-  - docker run -v "$PWD:/hostdir" -w /hostdir "hashicorp/terraform:$TERRAFORM_VERSION" init
-  - docker run -v "$PWD:/hostdir" -w /hostdir --env-file <(env) "hashicorp/terraform:$TERRAFORM_VERSION" validate
-  - docker run -v "$PWD:/hostdir" -w /hostdir "hashicorp/terraform:$TERRAFORM_VERSION" fmt -check=true -diff
+  - docker run -v "$PWD:/hostdir" -w /hostdir "yamamotofebc/terraform-provider-rke:$RKE_PROVIDER_VERSION" init
+  - docker run -v "$PWD:/hostdir" -w /hostdir --env-file <(env) "yamamotofebc/terraform-provider-rke:$RKE_PROVIDER_VERSION" validate
+  - docker run -v "$PWD:/hostdir" -w /hostdir "yamamotofebc/terraform-provider-rke:$RKE_PROVIDER_VERSION" fmt -check=true -diff
   # Check scripts
   - git diff --exit-code
   # Check YAMLs
