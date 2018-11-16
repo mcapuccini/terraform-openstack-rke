@@ -29,10 +29,11 @@ module "master" {
   floating_ip_pool    = "${var.floating_ip_pool}"
   ssh_user            = "${var.ssh_user}"
   ssh_key             = "${var.ssh_key}"
-  ssh_keypair         = "${openstack_compute_keypair_v2.keypair.name}"
-  role                = ["controlplane", "etcd"]
+  os_ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
   assign_floating_ip  = true
   allowed_ingress_tcp = [22, 6443]
+  docker_version      = "${var.docker_version}"
+  role                = ["controlplane", "etcd"]
 }
 
 # Create worker nodes
@@ -47,7 +48,9 @@ module "worker" {
   floating_ip_pool = "${var.floating_ip_pool}"
   ssh_user         = "${var.ssh_user}"
   ssh_key          = "${var.ssh_key}"
-  ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
+  os_ssh_keypair   = "${openstack_compute_keypair_v2.keypair.name}"
+  ssh_bastion_host = "${element(module.master.public_ip_list,0)}"
+  docker_version   = "${var.docker_version}"
   role             = ["worker"]
 }
 

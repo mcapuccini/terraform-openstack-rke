@@ -1,4 +1,3 @@
-# Cluster
 variable cluster_prefix {
   description = "Name prefix for the cluster resources"
   default     = "rke"
@@ -14,6 +13,7 @@ variable ssh_key_pub {
 
 variable ssh_user {
   description = "SSH user name (use the default user for the OS image)"
+  default     = "ubuntu"
 }
 
 variable external_network_id {
@@ -25,16 +25,15 @@ variable floating_ip_pool {
 }
 
 variable image_name {
-  description = "Name of an image to boot the nodes from (OS should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/)"
+  description = "Name of an image to boot the nodes from (OS should be Ubuntu 16.04)"
 }
 
-# Nodes
 variable master_flavor_name {
   description = "Master node flavor name"
 }
 
 variable master_count {
-  description = "Number of masters to deploy"
+  description = "Number of masters to deploy (should be an odd number)"
   default     = 1
 }
 
@@ -47,8 +46,12 @@ variable worker_count {
   default     = 2
 }
 
-# RKE
 variable ignore_docker_version {
   description = "If true RKE won't check Docker version on images"
   default     = false
+}
+
+variable docker_version {
+  default = "Docker version (should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/#software)"
+  default = "17.03"
 }
