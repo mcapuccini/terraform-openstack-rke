@@ -43,9 +43,9 @@ module "rke" {
   ssh_user="" # SSH user name (use the default user for the OS image)
   external_network_id="" # External network ID
   floating_ip_pool="" # Name of the floating IP pool (often same as the external network name)
-  image_name="" # Name of an image to boot the nodes from (OS shold be RKE-compliant)
+  image_name="" # Name of an image to boot the nodes from (OS should be Ubuntu 16.04)
   master_flavor_name="" # Master node flavor name
-  master_count=1 # Number of masters to deploy
+  master_count=1 # Number of masters to deploy (should be an odd number)
   worker_flavor_name="" # Worker node flavor name
   worker_count=2 # Number of workers to deploy
   ignore_docker_version=false # If true RKE won't check Docker version

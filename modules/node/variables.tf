@@ -22,7 +22,7 @@ variable ssh_key {
   description = "Path to private SSH key"
 }
 
-variable ssh_keypair {
+variable os_ssh_keypair {
   description = "SSH keypair to inject in the instance (previosly created in OpenStack)"
 }
 
@@ -65,4 +65,13 @@ variable allowed_ingress_udp {
   type        = "list"
   description = "Allowed UDP ingress traffic"
   default     = []
+}
+
+variable docker_version {
+  default = "Docker version (should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/#software)"
+}
+
+variable ssh_bastion_host {
+  default = "Bastion SSH host (mandatory if assign_floating_ip is false)"
+  default = ""
 }

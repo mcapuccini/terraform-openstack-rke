@@ -1,4 +1,4 @@
-output node_mappings {
+output "node_mappings" {
   description = "RKE node mappings"
   value       = ["${data.rke_node_parameter.node_mappings.*.json}"]
 }
