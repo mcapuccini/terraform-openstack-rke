@@ -37,7 +37,7 @@ install:
 script:
   # Terraform init, validate, and format check
   - terraform init
-  - terraform validate
+  - terraform validate -check-variables=false
   - terraform fmt -check=true -diff
   # Check YAMLs
   - yamllint -c .yamllint.yml -s $(find . -type f -name '*.yml')
