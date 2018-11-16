@@ -32,6 +32,7 @@ module "master" {
   ssh_keypair        = "${openstack_compute_keypair_v2.keypair.name}"
   role               = ["controlplane", "etcd"]
   assign_floating_ip = true
+  allowed_ingress_tcp = [22, 6443]
 }
 
 # Create worker nodes

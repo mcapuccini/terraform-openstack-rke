@@ -5,7 +5,7 @@ variable name_prefix {
 variable allowed_ingress_tcp {
   type        = "list"
   description = "Allowed TCP ingress traffic"
-  default     = [22, 6443]
+  default     = []
 }
 
 variable allowed_ingress_udp {
