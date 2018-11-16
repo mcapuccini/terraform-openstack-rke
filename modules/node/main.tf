@@ -69,7 +69,7 @@ locals {
 
 data rke_node_parameter "node_mappings" {
   depends_on = ["null_resource.prepare_nodes"] # this delays RKE provisioning until nodes are ready
-  count = "${var.count}"
+  count      = "${var.count}"
 
   address           = "${element(local.address_list, count.index)}"
   user              = "${var.ssh_user}"
