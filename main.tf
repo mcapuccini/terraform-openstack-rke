@@ -19,19 +19,19 @@ module "network" {
 
 # Create master node
 module "master" {
-  source             = "modules/node"
-  count              = "${var.master_count}"
-  name_prefix        = "${var.cluster_prefix}-master"
-  flavor_name        = "${var.master_flavor_name}"
-  image_name         = "${var.image_name}"
-  network_name       = "${module.network.network_name}"
-  secgroup_name      = "${module.secgroup.secgroup_name}"
-  floating_ip_pool   = "${var.floating_ip_pool}"
-  ssh_user           = "${var.ssh_user}"
-  ssh_key            = "${var.ssh_key}"
-  ssh_keypair        = "${openstack_compute_keypair_v2.keypair.name}"
-  role               = ["controlplane", "etcd"]
-  assign_floating_ip = true
+  source              = "modules/node"
+  count               = "${var.master_count}"
+  name_prefix         = "${var.cluster_prefix}-master"
+  flavor_name         = "${var.master_flavor_name}"
+  image_name          = "${var.image_name}"
+  network_name        = "${module.network.network_name}"
+  secgroup_name       = "${module.secgroup.secgroup_name}"
+  floating_ip_pool    = "${var.floating_ip_pool}"
+  ssh_user            = "${var.ssh_user}"
+  ssh_key             = "${var.ssh_key}"
+  ssh_keypair         = "${openstack_compute_keypair_v2.keypair.name}"
+  role                = ["controlplane", "etcd"]
+  assign_floating_ip  = true
   allowed_ingress_tcp = [22, 6443]
 }
 

@@ -1,7 +1,7 @@
 # Create security group for allowed ports
 module "allowed_ingress" {
-  source      = "../secgroup"
-  name_prefix = "${var.name_prefix}"
+  source              = "../secgroup"
+  name_prefix         = "${var.name_prefix}"
   allowed_ingress_tcp = "${var.allowed_ingress_tcp}"
   allowed_ingress_udp = "${var.allowed_ingress_udp}"
 }
@@ -18,7 +18,7 @@ resource "openstack_compute_instance_v2" "instance" {
     name = "${var.network_name}"
   }
 
-  security_groups = ["${var.secgroup_name}","${module.allowed_ingress.secgroup_name}"]
+  security_groups = ["${var.secgroup_name}", "${module.allowed_ingress.secgroup_name}"]
 }
 
 # Allocate floating IPs (if required)
