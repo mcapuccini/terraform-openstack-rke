@@ -31,7 +31,7 @@ variable network_name {
 }
 
 variable secgroup_name {
-  description = "Name of the security group to apply to this node"
+  description = "Name of the security group for this node"
 }
 
 variable assign_floating_ip {
@@ -53,4 +53,16 @@ variable labels {
   type        = "map"
   description = "Map of Kubernetes labels for this node"
   default     = {}
+}
+
+variable allowed_ingress_tcp {
+  type        = "list"
+  description = "Allowed TCP ingress traffic"
+  default     = []
+}
+
+variable allowed_ingress_udp {
+  type        = "list"
+  description = "Allowed UDP ingress traffic"
+  default     = []
 }
