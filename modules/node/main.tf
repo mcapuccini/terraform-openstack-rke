@@ -28,7 +28,7 @@ resource "openstack_compute_floatingip_v2" "floating_ip" {
 }
 
 # Associate floating IPs (if required)
-resource "openstack_compute_floatingip_associate_v2" "floating_ip" {
+resource "openstack_compute_floatingip_associate_v2" "associate_floating_ip" {
   count       = "${var.assign_floating_ip ? var.count : 0}"
   floating_ip = "${element(openstack_compute_floatingip_v2.floating_ip.*.address, count.index)}"
   instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
@@ -68,8 +68,7 @@ locals {
 }
 
 data rke_node_parameter "node_mappings" {
-  depends_on = ["null_resource.prepare_nodes"] # this delays RKE provisioning until nodes are ready
-  count      = "${var.count}"
+  count = "${var.count}"
 
   address           = "${element(local.address_list, count.index)}"
   user              = "${var.ssh_user}"

@@ -54,6 +54,19 @@ module "worker" {
   role             = ["worker"]
 }
 
+# Compute dynamic dependencies for RKE provisioning step (workaround, may be not needed in 0.12)
+locals {
+  rke_cluster_deps = [
+    "${join(",",module.master.prepare_nodes_id_list)}",
+    "${join(",",module.worker.prepare_nodes_id_list)}",
+    "${join(",",module.master.associate_floating_ip_id_list)}",
+    "${join(",",module.master.allowed_ingress_id_list)}",
+    "${join(",",module.worker.allowed_ingress_id_list)}",
+    "${join(",",module.secgroup.rule_id_list)}",
+    "${module.network.interface_id}",
+  ]
+}
+
 # Provision RKE
 resource rke_cluster "cluster" {
   nodes_conf = ["${concat(module.master.node_mappings,module.worker.node_mappings)}"]
@@ -66,6 +79,11 @@ resource rke_cluster "cluster" {
   }
 
   ignore_docker_version = "${var.ignore_docker_version}"
+
+  # Workaround: make sure resources are created and deleted in the right order
+  provisioner "local-exec" {
+    command = "# ${join(",",local.rke_cluster_deps)}"
+  }
 }
 
 # Write kubeconfig.yaml
