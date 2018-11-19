@@ -2,5 +2,6 @@
 *.tfstate
 *.tfstate.*
 *.tfvars
-kubeconfig.yml
 terraform-provider-rke-*
+cluster.yml
+kube_config_cluster.yml
