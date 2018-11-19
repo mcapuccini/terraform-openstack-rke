@@ -80,7 +80,7 @@ resource rke_cluster "cluster" {
 
   ignore_docker_version = "${var.ignore_docker_version}"
 
-  # Workaround: makes sure resources are created and deleted in the right order
+  # Workaround: make sure resources are created and deleted in the right order
   provisioner "local-exec" {
     command = "# ${join(",",local.rke_cluster_deps)}"
   }
