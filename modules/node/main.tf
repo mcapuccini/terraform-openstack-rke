@@ -20,9 +20,10 @@ resource "openstack_compute_instance_v2" "instance" {
 
   security_groups = ["${var.secgroup_name}", "${module.allowed_ingress.secgroup_name}"]
 
-  # Drain and delete node before downscaling
+  # Try to drain and delete node before downscaling
   provisioner "local-exec" {
-    when = "destroy"
+    when       = "destroy"
+    on_failure = "continue" # when running terraform destroy this provisioner will fail
 
     environment {
       KUBECONFIG = "./kube_config_cluster.yml"
