@@ -76,7 +76,7 @@ kubectl get nodes
 
 ## Scale
 
-To scale the cluster you can increase and decrease the number of nodes in `main.tf` and rerun `terraform apply`.
+To scale the cluster you can increase and decrease the number of workers in `main.tf` and rerun `terraform apply`.
 
 ## Destroy
 
