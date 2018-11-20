@@ -15,6 +15,7 @@
 On your workstation you need to:
 
 - Install [Terraform](https://www.terraform.io/)
+- Install [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/)
 - Install the [terafform-provider-rke](https://github.com/yamamoto-febc/terraform-provider-rke)
 - Set up the environmet by [sourcing the OpenStack RC](https://docs.openstack.org/zh_CN/user-guide/common/cli-set-environment-variables-using-openstack-rc.html) file for your project
 
