@@ -18,9 +18,10 @@ On your workstation you need to:
 - Install the [terafform-provider-rke](https://github.com/yamamoto-febc/terraform-provider-rke)
 - Set up the environmet by [sourcing the OpenStack RC](https://docs.openstack.org/zh_CN/user-guide/common/cli-set-environment-variables-using-openstack-rc.html) file for your project
 
-On your OpenStack project you need to:
+In your OpenStack project you need:
 
-- Import an [RKE-compliant OS image](https://rancher.com/docs/rke/v0.1.x/en/os/#operating-system)
+- An Ubuntu 16.04 image
+- At least one available floating IP
 
 ## Configuration
 
@@ -37,7 +38,6 @@ In `main.tf` paste and fill in the following configuration:
 ```hcl
 module "rke" {
   source  = "mcapuccini/rke/openstack"
-  # Required variables
   ssh_key_pub="" # Local path to public SSH key
   ssh_key="" # Local path to SSH key
   ssh_user="" # SSH user name (use the default user for the OS image)
@@ -69,13 +69,13 @@ terraform apply
 Once the deployment is done, you can configure `kubectl` and check the nodes:
 
 ```
-KUBECONFIG="$PWD/kubeconfig.yml"
+KUBECONFIG="$PWD/kube_config_cluster.yml"
 kubectl get nodes
 ```
 
 ## Scale
 
-To scale the cluster you can increase and decrease the number of masters and workers in `main.tf` and rerun `terraform apply`.
+To scale the cluster you can increase and decrease the number of nodes in `main.tf` and rerun `terraform apply`.
 
 ## Destroy
 
