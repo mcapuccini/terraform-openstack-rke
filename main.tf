@@ -86,8 +86,13 @@ resource rke_cluster "cluster" {
   }
 }
 
-# Write kubeconfig.yaml
-resource local_file "kube_cluster_yaml" {
-  filename = "./kubeconfig.yml"
+# Write YAML configs
+resource local_file "kube_config_cluster" {
+  filename = "./kube_config_cluster.yml"
   content  = "${rke_cluster.cluster.kube_config_yaml}"
+}
+
+resource "local_file" "custer_yml" {
+  filename = "./cluster.yml"
+  content  = "${rke_cluster.cluster.rke_cluster_yaml}"
 }
