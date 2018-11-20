@@ -94,5 +94,5 @@ resource local_file "kube_config_cluster" {
 
 resource "local_file" "custer_yml" {
   filename = "./cluster.yml"
-  content = "${rke_cluster.cluster.rke_cluster_yaml}"
+  content  = "${rke_cluster.cluster.rke_cluster_yaml}"
 }
