@@ -19,6 +19,17 @@ resource "openstack_compute_instance_v2" "instance" {
   }
 
   security_groups = ["${var.secgroup_name}", "${module.allowed_ingress.secgroup_name}"]
+
+  # Drain and delete node before downscaling
+  provisioner "local-exec" {
+    when = "destroy"
+
+    environment {
+      KUBECONFIG = "./kube_config_cluster.yml"
+    }
+
+    command = "kubectl drain ${var.name_prefix}-${format("%03d", count.index)} --delete-local-data --force --ignore-daemonsets && kubectl delete node ${var.name_prefix}-${format("%03d", count.index)}"
+  }
 }
 
 # Allocate floating IPs (if required)
