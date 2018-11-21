@@ -88,11 +88,13 @@ resource rke_cluster "cluster" {
 
 # Write YAML configs
 resource local_file "kube_config_cluster" {
+  count = "${var.write_kube_config_cluster ? 1 : 0}"
   filename = "./kube_config_cluster.yml"
   content  = "${rke_cluster.cluster.kube_config_yaml}"
 }
 
 resource "local_file" "custer_yml" {
+  count = "${var.write_custer_yml ? 1 : 0}"
   filename = "./cluster.yml"
   content  = "${rke_cluster.cluster.rke_cluster_yaml}"
 }

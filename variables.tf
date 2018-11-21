@@ -52,6 +52,16 @@ variable ignore_docker_version {
 }
 
 variable docker_version {
-  default = "Docker version (should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/#software)"
+  description = "Docker version (should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/#software)"
   default = "17.03"
+}
+
+variable write_kube_config_cluster {
+  description = "If true kube_config_cluster.yml will be written locally"
+  default = true
+}
+
+variable write_cluster_yaml {
+  description = "If true cluster.yml will be written locally"
+  default = true
 }
