@@ -28,7 +28,7 @@ env:
     - OS_REGION_NAME="UPPMAX"
     - OS_IDENTITY_API_VERSION=3
     - TF_VAR_external_network_id="af006ff3-d68a-4722-a056-0f631c5a0039"
-    - TF_VAR_loating_ip_pool="Public External IPv4 network"
+    - TF_VAR_floating_ip_pool="Public External IPv4 network"
     - TF_VAR_image_name="Ubuntu 16.04 LTS (Xenial Xerus) - latest"
     - TF_VAR_master_flavor_name="ssc.large"
     - TF_VAR_worker_flavor_name="ssc.large"
