@@ -17,8 +17,8 @@ env:
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
     # SSH
-    - TF_VAR_ssh_key="id_rsa"
-    - TF_VAR_ssh_key_pub="id_rsa.pub"
+    - TF_VAR_ssh_key="ssh_key"
+    - TF_VAR_ssh_key_pub="ssh_key.pub"
     # OpenStack environment
     - OS_AUTH_URL="https://uppmax.cloud.snic.se:5000/v3"
     - OS_PROJECT_ID="9301f656901b45c291887b5012f44a20"
