@@ -20,30 +20,30 @@ env:
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
     # OpenStack environment
-    - OS_AUTH_URL="https://uppmax.cloud.snic.se:5000/v3"
-    - OS_PROJECT_ID="9301f656901b45c291887b5012f44a20"
-    - OS_PROJECT_NAME="SNIC 2018/10-4"
-    - OS_USER_DOMAIN_NAME="snic"
-    - OS_USERNAME="s3699"
-    - OS_REGION_NAME="UPPMAX"
+    - OS_AUTH_URL="https://pouta.csc.fi:5001/v3"
+    - OS_PROJECT_ID="glenna"
+    - OS_PROJECT_NAME="glenna"
+    - OS_USER_DOMAIN_NAME="Default"
+    - OS_USERNAME="marca"
+    - OS_REGION_NAME="regionOne"
     - OS_IDENTITY_API_VERSION=3
-    - TF_VAR_external_network_id="af006ff3-d68a-4722-a056-0f631c5a0039"
-    - TF_VAR_floating_ip_pool="Public External IPv4 network"
-    - TF_VAR_image_name="Ubuntu 16.04 LTS (Xenial Xerus) - latest"
-    - TF_VAR_master_flavor_name="ssc.large"
-    - TF_VAR_worker_flavor_name="ssc.large"
+    - TF_VAR_external_network_id="26f9344a-2e81-4ef5-a018-7d20cff891ee"
+    - TF_VAR_floating_ip_pool="public"
+    - TF_VAR_image_name="Ubuntu-16.04"
+    - TF_VAR_master_flavor_name="standard.large"
+    - TF_VAR_worker_flavor_name="standard.large"
     - secure: >
-        Z2inPCAYosHHBUNLnhJw5zzFvN3OFFN8BKFGPe+n1FXdf3QRv1uwDkRLchN3SUE2
-        nYyPQmYBxxlhj9IUCyh3fsdABCBA7XzGgBfc53IBWmOsyBhWo7PFKo+7ilq9tWRS
-        5P4ESJRjcIt6K1TmlyY1hNPmPmO+BB2Jr6bkLnv6AWbDyiIGXtMoRLCWi9SgiFzi
-        551uha8He/ZI0CfNTlLBRhGTIPeCrR2P2Lr1TXk0EgqXa7m118Iz5bYGGBVGk5Gl
-        JJMlaCP4jwAJBWDjXK3QPQOLPQqPgQZ4XDYwfTIhegNgIvcA6P2pwEcDjefuyPLX
-        bu4Pc71HZw4JZSUx5AbJAODch00uFRfoLBI+efEVvYjjUATxtynzbwqHjzFCfpZF
-        H6wvBcahFfH7Gy+jy/OrsBBZc/XZqFR1DpOOsmwHho5/+LxJ977jHSenHQiH66NL
-        enjAW/1WX1nqShW/68TSE+rA5ywBGk/EU5TKeFDqYH+kH8mq+nBgnDjhO+krQppV
-        nsE+nqG+LR0nQWT6AOj5eZrUDrLc5N5mgblNbGSK4X/1dedJA/6Z+7Xx87iCAUGZ
-        CSUNuFMSDWMCfhUjLlYX5W79pPj4kF4aA6Jb7/BLPs9ftVS0L2CH9/tLo+BOZ7+S
-        H69R6pfjWJSgUBP/qoFSPairRLTFwr8e0fdgA7tKRAE=
+        YkqneBUKw1r1/htOFryPndKGXMTT1qCJvYEp5qITul+TytdKvSBo35e3lPw5uUjpEPAo
+        FDPVwgPdO+HOM+H5DPlXdUcCMEay6z6j8vJPGYafIAUV/j5upPpeWG0XPgaFzFZ66pHa
+        qc1wbhWW4b9IKH8xOrs/GzZk+Len3HVO0oBgKuzMXWlIWdny6lhjOsWjIktvAvG/OKdm
+        7+3iriWc+H2IWMaFI9FRYTO38dNf6dLXGIm1qZxP3bWV8CFbmFZzr7K1aY6rVuMjgt4f
+        VmOoCSnYNpoaXUcW3rfc3ral/o4x8sbz+VYWxrV/2QgjyMWv8NMKpdXg8xEgH4TM7PuP
+        It4r+gJlgSl7wilOwKBhCTsVaBpBlfRKJ0WL3sjmjfEEt3+Ye5zjmniDvm5g9rzk6kGe
+        hXvmwmye0OY9dUrfp6kNgh0DwP9qvPEemcPsyBsEg4fTkLW00sBHtY3jcU4AgdMtgnlS
+        nyBN6j2emgXk0Uh/vfhJ25I6xT+7peH8SHPa55E+QzeXeB9dbbj6+hl7f9o1ki4p/pHR
+        eMB1ZfM5BRrnx9NMuvNpIB8KAQuEq+PwCJ9GFOx+HWZcRMjq48f70cxDtkyMJfd54rP4
+        44H1iemlg9sbIicdE7a20ZICXSh5iXP1Mhv0L0r/4L3W2gD34NscTuhrizsMR7+uHurr
+        0Qo=
   matrix:
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
