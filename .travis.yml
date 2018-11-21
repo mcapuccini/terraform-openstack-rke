@@ -20,38 +20,34 @@ env:
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
     # OpenStack environment
-    - OS_AUTH_URL="https://pouta.csc.fi:5001/v3"
-    - OS_PROJECT_ID="glenna"
-    - OS_PROJECT_NAME="glenna"
+    - OS_AUTH_URL="https://extcloud05.ebi.ac.uk:13000/v3"
+    - OS_PROJECT_ID="599a5ed79ef24064be8cdc1a7052a76e"
+    - OS_PROJECT_NAME="PhenoMeNal-Mesos"
     - OS_USER_DOMAIN_NAME="Default"
-    - OS_USERNAME="marca"
+    - OS_USERNAME="marco.capuccini@farmbio.uu.se"
     - OS_REGION_NAME="regionOne"
     - OS_IDENTITY_API_VERSION=3
-    - TF_VAR_external_network_id="26f9344a-2e81-4ef5-a018-7d20cff891ee"
-    - TF_VAR_floating_ip_pool="public"
-    - TF_VAR_image_name="Ubuntu-16.04"
-    - TF_VAR_master_flavor_name="standard.large"
-    - TF_VAR_worker_flavor_name="standard.large"
+    - TF_VAR_external_network_id="2d771d9c-f279-498f-8b8a-f5c6d83da6e8"
+    - TF_VAR_floating_ip_pool="ext-net"
+    - TF_VAR_image_name="Ubuntu_1604_LTS_latest"
+    - TF_VAR_master_flavor_name="s1.large"
+    - TF_VAR_worker_flavor_name="s1.large"
     - secure: >
-        YkqneBUKw1r1/htOFryPndKGXMTT1qCJvYEp5qITul+TytdKvSBo35e3lPw5uUjpEPAo
-        FDPVwgPdO+HOM+H5DPlXdUcCMEay6z6j8vJPGYafIAUV/j5upPpeWG0XPgaFzFZ66pHa
-        qc1wbhWW4b9IKH8xOrs/GzZk+Len3HVO0oBgKuzMXWlIWdny6lhjOsWjIktvAvG/OKdm
-        7+3iriWc+H2IWMaFI9FRYTO38dNf6dLXGIm1qZxP3bWV8CFbmFZzr7K1aY6rVuMjgt4f
-        VmOoCSnYNpoaXUcW3rfc3ral/o4x8sbz+VYWxrV/2QgjyMWv8NMKpdXg8xEgH4TM7PuP
-        It4r+gJlgSl7wilOwKBhCTsVaBpBlfRKJ0WL3sjmjfEEt3+Ye5zjmniDvm5g9rzk6kGe
-        hXvmwmye0OY9dUrfp6kNgh0DwP9qvPEemcPsyBsEg4fTkLW00sBHtY3jcU4AgdMtgnlS
-        nyBN6j2emgXk0Uh/vfhJ25I6xT+7peH8SHPa55E+QzeXeB9dbbj6+hl7f9o1ki4p/pHR
-        eMB1ZfM5BRrnx9NMuvNpIB8KAQuEq+PwCJ9GFOx+HWZcRMjq48f70cxDtkyMJfd54rP4
-        44H1iemlg9sbIicdE7a20ZICXSh5iXP1Mhv0L0r/4L3W2gD34NscTuhrizsMR7+uHurr
-        0Qo=
+        utajVM7Lv1UNBYG4+uCm/vW7kr9cbDfRdjOMaqYFtzX0+rR/YICiNZ0SLJRUovFQ8YQ
+        3p6grN0tkswuN3o1qde9cXC9XpJvjQMZXNELRlNyBBvo0k5t+x7pFCtD6OwXCzOCrDE
+        Jwvns07WwOMRnS6eEEU5lUEf9vrNjMKmgKnwJn+/p07Vd36J6deJULdS3h4+eSYqth+
+        jjUNIGw2+HXonFgEA7XXD65HBT6z3Ff+Q8EKQQPF6WklfF7UmeQWIlYtphNZMzHqyLX
+        fifubSIzLSwFdRmrK0j/p7qEgN5db8Gzw899i6doEuIfIhZ84GefTTQnOO8Co9OBPY3
+        77HYGUfOMGQDHtEc3EO16riqKAJMPT3c1yVcaMRAMSfPCSWh19l2rQrloDgKnYcxYCF
+        hbiv2sCZ8EelVs1Jk6E1Skjn3bgS53oKz/Z5bjyPVglDbTJ72MyKpa+uUYnbLO9Mokz
+        rDO9q2gh9o2esmlzbrurXjvnaB19AyTD7uudneBiz/KU2sND7H2ztO27NvJRQa9Db3t
+        2KXlrqJxJJ04NpMzTPlCUHP2jSOa50n6vBp+6GH0Dh3XtYnmigy90p0a3DYo6cBXz8/
+        Awab6UU3ZYdtDdSGaqwHQ3mVHhzqwThdNuYW8vZrhjWo7+nf62SduebsPhimrJqdGPZ
+        jmCr/o9OvryHM=
   matrix:
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
       TF_VAR_master_count=1
-      TF_VAR_worker_count=1
-    - >
-      TF_VAR_cluster_prefix=rke-ci-ha-$TRAVIS_BUILD_NUMBER
-      TF_VAR_master_count=3
       TF_VAR_worker_count=1
 
 install:
