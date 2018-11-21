@@ -16,6 +16,38 @@ env:
     - TERRAFORM_VERSION=0.11.10
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
+    # SSH
+    - TF_ssh_key="id_rsa"
+    - TF_ssh_key_pub="id_rsa.pub"
+    # OpenStack environment
+    - OS_AUTH_URL="https://uppmax.cloud.snic.se:5000/v3"
+    - OS_PROJECT_ID="9301f656901b45c291887b5012f44a20"
+    - OS_PROJECT_NAME="SNIC 2018/10-4"
+    - OS_USER_DOMAIN_NAME="snic"
+    - OS_USERNAME="s3699"
+    - OS_REGION_NAME="UPPMAX"
+    - OS_IDENTITY_API_VERSION=3
+    - TF_external_network_id = "af006ff3-d68a-4722-a056-0f631c5a0039"
+    - TF_floating_ip_pool = "Public External IPv4 network"
+    - TF_image_name = "Ubuntu 16.04 LTS (Xenial Xerus) - latest"
+    - TF_master_flavor_name = "ssc.large"
+    - TF_worker_flavor_name = "ssc.large"
+    - secure: >
+        Z2inPCAYosHHBUNLnhJw5zzFvN3OFFN8BKFGPe+n1FXdf3QRv1uwDkRLchN3SUE2
+        nYyPQmYBxxlhj9IUCyh3fsdABCBA7XzGgBfc53IBWmOsyBhWo7PFKo+7ilq9tWRS
+        5P4ESJRjcIt6K1TmlyY1hNPmPmO+BB2Jr6bkLnv6AWbDyiIGXtMoRLCWi9SgiFzi
+        551uha8He/ZI0CfNTlLBRhGTIPeCrR2P2Lr1TXk0EgqXa7m118Iz5bYGGBVGk5Gl
+        JJMlaCP4jwAJBWDjXK3QPQOLPQqPgQZ4XDYwfTIhegNgIvcA6P2pwEcDjefuyPLX
+        bu4Pc71HZw4JZSUx5AbJAODch00uFRfoLBI+efEVvYjjUATxtynzbwqHjzFCfpZF
+        H6wvBcahFfH7Gy+jy/OrsBBZc/XZqFR1DpOOsmwHho5/+LxJ977jHSenHQiH66NL
+        enjAW/1WX1nqShW/68TSE+rA5ywBGk/EU5TKeFDqYH+kH8mq+nBgnDjhO+krQppV
+        nsE+nqG+LR0nQWT6AOj5eZrUDrLc5N5mgblNbGSK4X/1dedJA/6Z+7Xx87iCAUGZ
+        CSUNuFMSDWMCfhUjLlYX5W79pPj4kF4aA6Jb7/BLPs9ftVS0L2CH9/tLo+BOZ7+S
+        H69R6pfjWJSgUBP/qoFSPairRLTFwr8e0fdgA7tKRAE=
+  matrix:
+    - >
+      TF_master_count=1
+      TF_worker_count=1
 
 install:
   # Install Terraform
@@ -33,11 +65,23 @@ install:
   - unzip /tmp/teraform-provider-rke.zip -d $HOME/.terraform.d/plugins/
   # Install yamllint
   - sudo pip install yamllint==$YAMLLINT_VERSION
+  # Configure SSH key
+  - ssh-keygen -t rsa -N '' -f ssh_key
+  - eval "$(ssh-agent -s)"
+  - ssh-add ssh_key
 
-script:
+before_script:
   # Terraform init, validate, and format check
   - terraform init
-  - terraform validate -check-variables=false
+  - terraform validate
   - terraform fmt -check=true -diff
   # Check YAMLs
   - yamllint -c .yamllint.yml -s $(find . -type f -name '*.yml')
+
+script:
+  # Deploy
+  - terraform apply -auto-approve # this also runs sanity checks
+
+after_script:
+  # Destroy
+  - terraform destroy -force

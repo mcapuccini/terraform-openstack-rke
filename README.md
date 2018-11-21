@@ -41,7 +41,6 @@ module "rke" {
   source  = "mcapuccini/rke/openstack"
   ssh_key_pub="" # Local path to public SSH key
   ssh_key="" # Local path to SSH key
-  ssh_user="" # SSH user name (use the default user for the OS image)
   external_network_id="" # External network ID
   floating_ip_pool="" # Name of the floating IP pool (often same as the external network name)
   image_name="" # Name of an image to boot the nodes from (OS should be Ubuntu 16.04)
