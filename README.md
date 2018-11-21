@@ -1,6 +1,8 @@
 # OpenStack Rancher Kubernetes Engine Module
 
 [![Build Status](https://travis-ci.org/mcapuccini/terraform-openstack-rke.svg?branch=master)](https://travis-ci.org/mcapuccini/terraform-openstack-rke)
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-blue.svg)](https://registry.terraform.io/modules/mcapuccini/rke/openstack)
+
 
 [Terraform](https://www.terraform.io/) module to deploy [Kubernetes](https://kubernetes.io) with [RKE](https://rancher.com/docs/rke/v0.1.x/en/) on OpenStack.
 
