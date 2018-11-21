@@ -48,7 +48,6 @@ module "rke" {
   master_count=1 # Number of masters to deploy (should be an odd number)
   worker_flavor_name="" # Worker node flavor name
   worker_count=2 # Number of workers to deploy
-  ignore_docker_version=false # If true RKE won't check Docker version
 }
 ```
 
