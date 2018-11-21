@@ -17,8 +17,8 @@ env:
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
     # SSH
-    - TF_ssh_key="id_rsa"
-    - TF_ssh_key_pub="id_rsa.pub"
+    - TF_VAR_ssh_key="id_rsa"
+    - TF_VAR_ssh_key_pub="id_rsa.pub"
     # OpenStack environment
     - OS_AUTH_URL="https://uppmax.cloud.snic.se:5000/v3"
     - OS_PROJECT_ID="9301f656901b45c291887b5012f44a20"
@@ -27,11 +27,11 @@ env:
     - OS_USERNAME="s3699"
     - OS_REGION_NAME="UPPMAX"
     - OS_IDENTITY_API_VERSION=3
-    - TF_external_network_id = "af006ff3-d68a-4722-a056-0f631c5a0039"
-    - TF_floating_ip_pool = "Public External IPv4 network"
-    - TF_image_name = "Ubuntu 16.04 LTS (Xenial Xerus) - latest"
-    - TF_master_flavor_name = "ssc.large"
-    - TF_worker_flavor_name = "ssc.large"
+    - TF_VAR_external_network_id="af006ff3-d68a-4722-a056-0f631c5a0039"
+    - TF_VAR_loating_ip_pool="Public External IPv4 network"
+    - TF_VAR_image_name="Ubuntu 16.04 LTS (Xenial Xerus) - latest"
+    - TF_VAR_master_flavor_name="ssc.large"
+    - TF_VAR_worker_flavor_name="ssc.large"
     - secure: >
         Z2inPCAYosHHBUNLnhJw5zzFvN3OFFN8BKFGPe+n1FXdf3QRv1uwDkRLchN3SUE2
         nYyPQmYBxxlhj9IUCyh3fsdABCBA7XzGgBfc53IBWmOsyBhWo7PFKo+7ilq9tWRS
@@ -46,8 +46,13 @@ env:
         H69R6pfjWJSgUBP/qoFSPairRLTFwr8e0fdgA7tKRAE=
   matrix:
     - >
-      TF_master_count=1
-      TF_worker_count=1
+      TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
+      TF_VAR_master_count=1
+      TF_VAR_worker_count=1
+    - >
+      TF_VAR_cluster_prefix=rke-ci-ha-$TRAVIS_BUILD_NUMBER
+      TF_VAR_master_count=3
+      TF_VAR_worker_count=1
 
 install:
   # Install Terraform
