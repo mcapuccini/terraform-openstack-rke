@@ -48,8 +48,10 @@ module "rke" {
   image_name="" # Name of an image to boot the nodes from (OS should be Ubuntu 16.04)
   master_flavor_name="" # Master node flavor name
   master_count=1 # Number of masters to deploy (should be an odd number)
-  worker_flavor_name="" # Worker node flavor name
-  worker_count=2 # Number of workers to deploy
+  service_flavor_name="" # Service node flavor name (service nodes are general purpose)
+  service_count=2 # Number of service nodes to deploy
+  edge_flavor_name="" # Edge node flavor name (edge nodes run ingress controller and balance the API)
+  edge_count=1 # Number of edge nodes to deploy (should be at least 1)
 }
 ```
 
