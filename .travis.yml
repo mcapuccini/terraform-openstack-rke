@@ -51,7 +51,8 @@ env:
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
       TF_VAR_master_count=1
-      TF_VAR_worker_count=1
+      TF_VAR_service_count=1
+      TF_VAR_edge_count=1
 
 install:
   # Install Terraform
