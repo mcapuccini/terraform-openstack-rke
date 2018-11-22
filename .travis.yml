@@ -33,6 +33,7 @@ env:
     - TF_VAR_master_flavor_name="standard.large"
     - TF_VAR_service_flavor_name="standard.large"
     - TF_VAR_edge_flavor_name="standard.large"
+    - TF_VAR_ssh_user="cloud-user"
     # Local config (avoid showing information in travis log)
     - TF_VAR_write_kube_config_cluster=false
     - TF_VAR_write_cluster_yaml=false
