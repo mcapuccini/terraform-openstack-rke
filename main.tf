@@ -132,10 +132,17 @@ resource rke_cluster "cluster" {
 }
 
 # Write YAML configs
+locals {
+  api_access       = "https://${element(module.edge.public_ip_list,0)}:6443"
+  api_access_regex = "/https://\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:6443/"
+}
+
 resource local_file "kube_config_cluster" {
   count    = "${var.write_kube_config_cluster ? 1 : 0}"
   filename = "./kube_config_cluster.yml"
-  content  = "${rke_cluster.cluster.kube_config_yaml}"
+
+  # Workaround: https://github.com/rancher/rke/issues/705
+  content = "${replace(rke_cluster.cluster.kube_config_yaml, local.api_access_regex, local.api_access)}"
 }
 
 resource "local_file" "custer_yml" {
