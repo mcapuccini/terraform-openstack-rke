@@ -49,11 +49,26 @@ env:
         XhhGrnWKG3QbPc5erVvblsvjrQEwk1YlzJAfHL2Uhn6Id6kF0mGynSb62Z8el8iI0lH+14
         25lMilTXfITGIU/tQbmKpox0Nk1A1R2sFXDO29BxVxYpMbMtbMe0w=
   matrix:
+    # Single master
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
       TF_VAR_master_count=1
       TF_VAR_service_count=1
       TF_VAR_edge_count=1
+    # HA
+    - >
+      TF_VAR_cluster_prefix=rke-ci-ha-$TRAVIS_BUILD_NUMBER
+      TF_VAR_master_count=3
+      TF_VAR_service_count=1
+      TF_VAR_edge_count=1
+    # IP for all nodes
+    - >
+      TF_VAR_cluster_prefix=rke-ci-ipall-$TRAVIS_BUILD_NUMBER
+      TF_VAR_master_count=1
+      TF_VAR_service_count=1
+      TF_VAR_edge_count=1
+      TF_VAR_master_assign_floating_ip=true
+      TF_VAR_service_assign_floating_ip=true
 
 install:
   # Install Terraform
@@ -87,6 +102,12 @@ before_script:
 script:
   # Deploy
   - terraform apply -auto-approve # this also runs sanity checks
+  # Scale up
+  - export TF_VAR_service_count=$((TF_VAR_service_count+1))
+  - export TF_VAR_service_edge=$((TF_VAR_edge_count+1))
+  # Scale down
+  - export TF_VAR_service_count=$((TF_VAR_service_count-1))
+  - export TF_VAR_service_edge=$((TF_VAR_edge_count-1))
 
 after_script:
   # Destroy
