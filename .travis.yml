@@ -20,34 +20,34 @@ env:
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
     # OpenStack environment
-    - OS_AUTH_URL="https://pouta.csc.fi:5001/v3"
-    - OS_PROJECT_ID="glenna"
-    - OS_PROJECT_NAME="glenna"
+    - OS_AUTH_URL="https://extcloud05.ebi.ac.uk:13000/v3"
+    - OS_PROJECT_ID="599a5ed79ef24064be8cdc1a7052a76e"
+    - OS_PROJECT_NAME="PhenoMeNal-Mesos"
     - OS_USER_DOMAIN_NAME="Default"
-    - OS_USERNAME="marca"
+    - OS_USERNAME="marco.capuccini@farmbio.uu.se"
     - OS_REGION_NAME="regionOne"
     - OS_IDENTITY_API_VERSION=3
-    - TF_VAR_external_network_id="26f9344a-2e81-4ef5-a018-7d20cff891ee"
-    - TF_VAR_floating_ip_pool="public"
-    - TF_VAR_image_name="Ubuntu-16.04"
-    - TF_VAR_master_flavor_name="standard.large"
-    - TF_VAR_service_flavor_name="standard.large"
-    - TF_VAR_edge_flavor_name="standard.large"
-    - TF_VAR_ssh_user="cloud-user"
+    - TF_VAR_external_network_id="2d771d9c-f279-498f-8b8a-f5c6d83da6e8"
+    - TF_VAR_floating_ip_pool="ext-net"
+    - TF_VAR_image_name="Ubuntu_1604_LTS_latest"
+    - TF_VAR_master_flavor_name="s1.large"
+    - TF_VAR_service_flavor_name="s1.large"
+    - TF_VAR_edge_flavor_name="s1.large"
     # Local config (avoid showing information in travis log)
     - TF_VAR_write_kube_config_cluster=false
     - TF_VAR_write_cluster_yaml=false
     - secure: >
-        yDuPdLNH8KUGXKCjznv55uzRydgJFRHEeyIwgFiu0voUEiwbN57S1+oP42DnlvmT/QQmyi
-        h++AESTOG5yDqBvALIQwD7UkNY8/ULaYsDFjR8/8ApM/loqlvvyiOtswkCYJ/OENJXs665
-        kqE2/Ik1S0cZoRIPn4AlT2+pSOeDhZYj5fImAURR5E5xWcYYM4IzPKcPMn61mAihPOFR71
-        DQjZYd+MtnTi9aZyyIVI1nx4vWRWZFnTMsCtDHFcFktncbgIj4iBPmsJ9CBke2qcmf7pRu
-        7eSAa+5G1mEaIOigEisx0do/n/xZa8V+dL1N2d7nhc27QwVHvaVNLRP2Ccf23GT4V/vjRL
-        RBbuqn3TfVP5yxvCYHXMb2uEEsTbwUbvUBG5MLoram7QRYbjI98Pqfqve2dZq8IPC9l4IK
-        AXc1Pm8qnKD8tlGEHFd+wt09Zf/tBTrz4A6WdYzXIYW6sPIfvo6fAq1jo0qZh7e6jS+l5B
-        PeOe/DfEQ1uvjiIBOpKyWOOH3CZEW/jsbfbFIhWJmmAErPiF4g5G+yhZKS1VvTOI7HRKnH
-        XhhGrnWKG3QbPc5erVvblsvjrQEwk1YlzJAfHL2Uhn6Id6kF0mGynSb62Z8el8iI0lH+14
-        25lMilTXfITGIU/tQbmKpox0Nk1A1R2sFXDO29BxVxYpMbMtbMe0w=
+        utajVM7Lv1UNBYG4+uCm/vW7kr9cbDfRdjOMaqYFtzX0+rR/YICiNZ0SLJRUovFQ8YQ
+        3p6grN0tkswuN3o1qde9cXC9XpJvjQMZXNELRlNyBBvo0k5t+x7pFCtD6OwXCzOCrDE
+        Jwvns07WwOMRnS6eEEU5lUEf9vrNjMKmgKnwJn+/p07Vd36J6deJULdS3h4+eSYqth+
+        jjUNIGw2+HXonFgEA7XXD65HBT6z3Ff+Q8EKQQPF6WklfF7UmeQWIlYtphNZMzHqyLX
+        fifubSIzLSwFdRmrK0j/p7qEgN5db8Gzw899i6doEuIfIhZ84GefTTQnOO8Co9OBPY3
+        77HYGUfOMGQDHtEc3EO16riqKAJMPT3c1yVcaMRAMSfPCSWh19l2rQrloDgKnYcxYCF
+        hbiv2sCZ8EelVs1Jk6E1Skjn3bgS53oKz/Z5bjyPVglDbTJ72MyKpa+uUYnbLO9Mokz
+        rDO9q2gh9o2esmlzbrurXjvnaB19AyTD7uudneBiz/KU2sND7H2ztO27NvJRQa9Db3t
+        2KXlrqJxJJ04NpMzTPlCUHP2jSOa50n6vBp+6GH0Dh3XtYnmigy90p0a3DYo6cBXz8/
+        Awab6UU3ZYdtDdSGaqwHQ3mVHhzqwThdNuYW8vZrhjWo7+nf62SduebsPhimrJqdGPZ
+        jmCr/o9OvryHM=
   matrix:
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
