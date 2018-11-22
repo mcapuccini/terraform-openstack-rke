@@ -19,29 +19,10 @@ module "network" {
 
 # Create master node
 module "master" {
-  source              = "modules/node"
-  count               = "${var.master_count}"
-  name_prefix         = "${var.cluster_prefix}-master"
-  flavor_name         = "${var.master_flavor_name}"
-  image_name          = "${var.image_name}"
-  network_name        = "${module.network.network_name}"
-  secgroup_name       = "${module.secgroup.secgroup_name}"
-  floating_ip_pool    = "${var.floating_ip_pool}"
-  ssh_user            = "${var.ssh_user}"
-  ssh_key             = "${var.ssh_key}"
-  os_ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
-  assign_floating_ip  = true
-  allowed_ingress_tcp = [22, 6443]
-  docker_version      = "${var.docker_version}"
-  role                = ["controlplane", "etcd"]
-}
-
-# Create worker nodes
-module "worker" {
   source           = "modules/node"
-  count            = "${var.worker_count}"
-  name_prefix      = "${var.cluster_prefix}-worker"
-  flavor_name      = "${var.worker_flavor_name}"
+  count            = "${var.master_count}"
+  name_prefix      = "${var.cluster_prefix}-master"
+  flavor_name      = "${var.master_flavor_name}"
   image_name       = "${var.image_name}"
   network_name     = "${module.network.network_name}"
   secgroup_name    = "${module.secgroup.secgroup_name}"
@@ -49,33 +30,97 @@ module "worker" {
   ssh_user         = "${var.ssh_user}"
   ssh_key          = "${var.ssh_key}"
   os_ssh_keypair   = "${openstack_compute_keypair_v2.keypair.name}"
-  ssh_bastion_host = "${element(module.master.public_ip_list,0)}"
+  ssh_bastion_host = "${element(module.edge.public_ip_list,0)}"
+  docker_version   = "${var.docker_version}"
+  role             = ["controlplane", "etcd"]
+
+  labels = {
+    node_type = "master"
+  }
+}
+
+# Create service nodes
+module "service" {
+  source           = "modules/node"
+  count            = "${var.service_count}"
+  name_prefix      = "${var.cluster_prefix}-service"
+  flavor_name      = "${var.service_flavor_name}"
+  image_name       = "${var.image_name}"
+  network_name     = "${module.network.network_name}"
+  secgroup_name    = "${module.secgroup.secgroup_name}"
+  floating_ip_pool = "${var.floating_ip_pool}"
+  ssh_user         = "${var.ssh_user}"
+  ssh_key          = "${var.ssh_key}"
+  os_ssh_keypair   = "${openstack_compute_keypair_v2.keypair.name}"
+  ssh_bastion_host = "${element(module.edge.public_ip_list,0)}"
   docker_version   = "${var.docker_version}"
   role             = ["worker"]
+
+  labels = {
+    node_type = "service"
+  }
+}
+
+# Create edge nodes
+module "edge" {
+  source              = "modules/node"
+  count               = "${var.edge_count}"
+  name_prefix         = "${var.cluster_prefix}-edge"
+  flavor_name         = "${var.edge_flavor_name}"
+  image_name          = "${var.image_name}"
+  network_name        = "${module.network.network_name}"
+  secgroup_name       = "${module.secgroup.secgroup_name}"
+  floating_ip_pool    = "${var.floating_ip_pool}"
+  ssh_user            = "${var.ssh_user}"
+  ssh_key             = "${var.ssh_key}"
+  os_ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
+  docker_version      = "${var.docker_version}"
+  assign_floating_ip  = true
+  allowed_ingress_tcp = [22, 6443]
+  role                = ["worker"]
+
+  labels = {
+    node_type = "edge"
+  }
 }
 
 # Compute dynamic dependencies for RKE provisioning step (workaround, may be not needed in 0.12)
 locals {
   rke_cluster_deps = [
-    "${join(",",module.master.prepare_nodes_id_list)}",
-    "${join(",",module.worker.prepare_nodes_id_list)}",
-    "${join(",",module.master.associate_floating_ip_id_list)}",
+    "${join(",",module.master.prepare_nodes_id_list)}",       # Master stuff ...
     "${join(",",module.master.allowed_ingress_id_list)}",
-    "${join(",",module.worker.allowed_ingress_id_list)}",
-    "${join(",",module.secgroup.rule_id_list)}",
+    "${join(",",module.service.prepare_nodes_id_list)}",      # Service stuff ...
+    "${join(",",module.service.allowed_ingress_id_list)}",
+    "${join(",",module.edge.prepare_nodes_id_list)}",         # Edge stuff ...
+    "${join(",",module.edge.allowed_ingress_id_list)}",
+    "${join(",",module.edge.associate_floating_ip_id_list)}",
+    "${join(",",module.secgroup.rule_id_list)}",              # Other stuff ...
     "${module.network.interface_id}",
   ]
 }
 
 # Provision RKE
 resource rke_cluster "cluster" {
-  nodes_conf = ["${concat(module.master.node_mappings,module.worker.node_mappings)}"]
+  nodes_conf = ["${concat(module.master.node_mappings,module.service.node_mappings,module.edge.node_mappings)}"]
 
   bastion_host = {
-    address      = "${element(module.master.public_ip_list,0)}"
+    address      = "${element(module.edge.public_ip_list,0)}"
     user         = "${var.ssh_user}"
     ssh_key_path = "${var.ssh_key}"
     port         = 22
+  }
+
+  ingress = {
+    provider = "nginx"
+
+    node_selector = {
+      node_type = "edge"
+    }
+  }
+
+  authentication = {
+    strategy = "x509"
+    sans     = ["${module.edge.public_ip_list}"]
   }
 
   ignore_docker_version = "${var.ignore_docker_version}"
@@ -87,10 +132,17 @@ resource rke_cluster "cluster" {
 }
 
 # Write YAML configs
+locals {
+  api_access       = "https://${element(module.edge.public_ip_list,0)}:6443"
+  api_access_regex = "/https://\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:6443/"
+}
+
 resource local_file "kube_config_cluster" {
   count    = "${var.write_kube_config_cluster ? 1 : 0}"
   filename = "./kube_config_cluster.yml"
-  content  = "${rke_cluster.cluster.kube_config_yaml}"
+
+  # Workaround: https://github.com/rancher/rke/issues/705
+  content = "${replace(rke_cluster.cluster.kube_config_yaml, local.api_access_regex, local.api_access)}"
 }
 
 resource "local_file" "custer_yml" {

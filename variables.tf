@@ -37,13 +37,22 @@ variable master_count {
   default     = 1
 }
 
-variable worker_flavor_name {
-  description = "Worker node flavor name"
+variable service_flavor_name {
+  description = "Service node flavor name"
 }
 
-variable worker_count {
-  description = "Number of workers to deploy"
+variable service_count {
+  description = "Number of service nodes to deploy"
   default     = 2
+}
+
+variable edge_flavor_name {
+  description = "Edge node flavor name"
+}
+
+variable edge_count {
+  description = "Number of edge nodes to deploy (this should be at least 1)"
+  default     = 1
 }
 
 variable ignore_docker_version {
