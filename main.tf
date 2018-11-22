@@ -6,8 +6,10 @@ resource "openstack_compute_keypair_v2" "keypair" {
 
 # Create security group
 module "secgroup" {
-  source      = "modules/secgroup"
-  name_prefix = "${var.cluster_prefix}"
+  source              = "modules/secgroup"
+  name_prefix         = "${var.cluster_prefix}"
+  allowed_ingress_tcp = "${var.allowed_ingress_tcp}"
+  allowed_ingress_udp = "${var.allowed_ingress_udp}"
 }
 
 # Create network
@@ -65,21 +67,20 @@ module "service" {
 
 # Create edge nodes
 module "edge" {
-  source              = "modules/node"
-  count               = "${var.edge_count}"
-  name_prefix         = "${var.cluster_prefix}-edge"
-  flavor_name         = "${var.edge_flavor_name}"
-  image_name          = "${var.image_name}"
-  network_name        = "${module.network.network_name}"
-  secgroup_name       = "${module.secgroup.secgroup_name}"
-  floating_ip_pool    = "${var.floating_ip_pool}"
-  ssh_user            = "${var.ssh_user}"
-  ssh_key             = "${var.ssh_key}"
-  os_ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
-  docker_version      = "${var.docker_version}"
-  assign_floating_ip  = "${var.edge_assign_floating_ip}"
-  allowed_ingress_tcp = [22, 6443]
-  role                = ["worker"]
+  source             = "modules/node"
+  count              = "${var.edge_count}"
+  name_prefix        = "${var.cluster_prefix}-edge"
+  flavor_name        = "${var.edge_flavor_name}"
+  image_name         = "${var.image_name}"
+  network_name       = "${module.network.network_name}"
+  secgroup_name      = "${module.secgroup.secgroup_name}"
+  floating_ip_pool   = "${var.floating_ip_pool}"
+  ssh_user           = "${var.ssh_user}"
+  ssh_key            = "${var.ssh_key}"
+  os_ssh_keypair     = "${openstack_compute_keypair_v2.keypair.name}"
+  docker_version     = "${var.docker_version}"
+  assign_floating_ip = "${var.edge_assign_floating_ip}"
+  role               = ["worker"]
 
   labels = {
     node_type = "edge"
@@ -90,11 +91,8 @@ module "edge" {
 locals {
   rke_cluster_deps = [
     "${join(",",module.master.prepare_nodes_id_list)}",       # Master stuff ...
-    "${join(",",module.master.allowed_ingress_id_list)}",
     "${join(",",module.service.prepare_nodes_id_list)}",      # Service stuff ...
-    "${join(",",module.service.allowed_ingress_id_list)}",
     "${join(",",module.edge.prepare_nodes_id_list)}",         # Edge stuff ...
-    "${join(",",module.edge.allowed_ingress_id_list)}",
     "${join(",",module.edge.associate_floating_ip_id_list)}",
     "${join(",",module.secgroup.rule_id_list)}",              # Other stuff ...
     "${module.network.interface_id}",

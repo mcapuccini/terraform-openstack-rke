@@ -55,18 +55,6 @@ variable labels {
   default     = {}
 }
 
-variable allowed_ingress_tcp {
-  type        = "list"
-  description = "Allowed TCP ingress traffic"
-  default     = []
-}
-
-variable allowed_ingress_udp {
-  type        = "list"
-  description = "Allowed UDP ingress traffic"
-  default     = []
-}
-
 variable docker_version {
   default = "Docker version (should be RKE-compliant: https://rancher.com/docs/rke/v0.1.x/en/os/#software)"
 }
