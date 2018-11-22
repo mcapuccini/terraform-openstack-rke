@@ -19,20 +19,21 @@ module "network" {
 
 # Create master node
 module "master" {
-  source           = "modules/node"
-  count            = "${var.master_count}"
-  name_prefix      = "${var.cluster_prefix}-master"
-  flavor_name      = "${var.master_flavor_name}"
-  image_name       = "${var.image_name}"
-  network_name     = "${module.network.network_name}"
-  secgroup_name    = "${module.secgroup.secgroup_name}"
-  floating_ip_pool = "${var.floating_ip_pool}"
-  ssh_user         = "${var.ssh_user}"
-  ssh_key          = "${var.ssh_key}"
-  os_ssh_keypair   = "${openstack_compute_keypair_v2.keypair.name}"
-  ssh_bastion_host = "${element(module.edge.public_ip_list,0)}"
-  docker_version   = "${var.docker_version}"
-  role             = ["controlplane", "etcd"]
+  source             = "modules/node"
+  count              = "${var.master_count}"
+  name_prefix        = "${var.cluster_prefix}-master"
+  flavor_name        = "${var.master_flavor_name}"
+  image_name         = "${var.image_name}"
+  network_name       = "${module.network.network_name}"
+  secgroup_name      = "${module.secgroup.secgroup_name}"
+  floating_ip_pool   = "${var.floating_ip_pool}"
+  ssh_user           = "${var.ssh_user}"
+  ssh_key            = "${var.ssh_key}"
+  os_ssh_keypair     = "${openstack_compute_keypair_v2.keypair.name}"
+  ssh_bastion_host   = "${element(module.edge.public_ip_list,0)}"
+  docker_version     = "${var.docker_version}"
+  assign_floating_ip = "${var.master_assign_floating_ip}"
+  role               = ["controlplane", "etcd"]
 
   labels = {
     node_type = "master"
@@ -41,20 +42,21 @@ module "master" {
 
 # Create service nodes
 module "service" {
-  source           = "modules/node"
-  count            = "${var.service_count}"
-  name_prefix      = "${var.cluster_prefix}-service"
-  flavor_name      = "${var.service_flavor_name}"
-  image_name       = "${var.image_name}"
-  network_name     = "${module.network.network_name}"
-  secgroup_name    = "${module.secgroup.secgroup_name}"
-  floating_ip_pool = "${var.floating_ip_pool}"
-  ssh_user         = "${var.ssh_user}"
-  ssh_key          = "${var.ssh_key}"
-  os_ssh_keypair   = "${openstack_compute_keypair_v2.keypair.name}"
-  ssh_bastion_host = "${element(module.edge.public_ip_list,0)}"
-  docker_version   = "${var.docker_version}"
-  role             = ["worker"]
+  source             = "modules/node"
+  count              = "${var.service_count}"
+  name_prefix        = "${var.cluster_prefix}-service"
+  flavor_name        = "${var.service_flavor_name}"
+  image_name         = "${var.image_name}"
+  network_name       = "${module.network.network_name}"
+  secgroup_name      = "${module.secgroup.secgroup_name}"
+  floating_ip_pool   = "${var.floating_ip_pool}"
+  ssh_user           = "${var.ssh_user}"
+  ssh_key            = "${var.ssh_key}"
+  os_ssh_keypair     = "${openstack_compute_keypair_v2.keypair.name}"
+  ssh_bastion_host   = "${element(module.edge.public_ip_list,0)}"
+  docker_version     = "${var.docker_version}"
+  assign_floating_ip = "${var.service_assign_floating_ip}"
+  role               = ["worker"]
 
   labels = {
     node_type = "service"
@@ -75,7 +77,7 @@ module "edge" {
   ssh_key             = "${var.ssh_key}"
   os_ssh_keypair      = "${openstack_compute_keypair_v2.keypair.name}"
   docker_version      = "${var.docker_version}"
-  assign_floating_ip  = true
+  assign_floating_ip  = "${var.edge_assign_floating_ip}"
   allowed_ingress_tcp = [22, 6443]
   role                = ["worker"]
 

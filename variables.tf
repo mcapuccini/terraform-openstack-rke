@@ -74,3 +74,18 @@ variable write_cluster_yaml {
   description = "If true cluster.yml will be written locally"
   default     = true
 }
+
+variable master_assign_floating_ip {
+  description = "If true a floating IP is assigned to each master node"
+  default     = false
+}
+
+variable service_assign_floating_ip {
+  description = "If true a floating IP is assigned to each service node"
+  default     = false
+}
+
+variable edge_assign_floating_ip {
+  description = "If true a floating IP is assigned to each edge node"
+  default     = true
+}
