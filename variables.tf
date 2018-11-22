@@ -89,3 +89,15 @@ variable edge_assign_floating_ip {
   description = "If true a floating IP is assigned to each edge node"
   default     = true
 }
+
+variable allowed_ingress_tcp {
+  type        = "list"
+  description = "Allowed TCP ingress traffic"
+  default     = [22, 6443]
+}
+
+variable allowed_ingress_udp {
+  type        = "list"
+  description = "Allowed UDP ingress traffic"
+  default     = []
+}
