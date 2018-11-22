@@ -57,7 +57,7 @@ resource null_resource "prepare_nodes" {
   provisioner "remote-exec" {
     connection {
       # External
-      bastion_host     = "${var.assign_floating_ip && var.ssh_bastion_host != "" ? element(concat(openstack_compute_floatingip_v2.floating_ip.*.address,list("")), count.index) : var.ssh_bastion_host}" # workaround (empty list, no need in TF 0.12)
+      bastion_host     = "${var.assign_floating_ip && var.ssh_bastion_host == "" ? element(concat(openstack_compute_floatingip_v2.floating_ip.*.address,list("")), count.index) : var.ssh_bastion_host}" # workaround (empty list, no need in TF 0.12)
       bastion_host_key = "${file(var.ssh_key)}"
 
       # Internal
