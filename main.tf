@@ -87,6 +87,31 @@ module "edge" {
   }
 }
 
+# Create storage nodes
+module "storage" {
+  source             = "modules/node"
+  count              = "${var.storage_count}"
+  name_prefix        = "${var.cluster_prefix}-storage"
+  flavor_name        = "${var.storage_flavor_name}"
+  image_name         = "${var.image_name}"
+  network_name       = "${module.network.network_name}"
+  secgroup_name      = "${module.secgroup.secgroup_name}"
+  floating_ip_pool   = "${var.floating_ip_pool}"
+  ssh_user           = "${var.ssh_user}"
+  ssh_key            = "${var.ssh_key}"
+  os_ssh_keypair     = "${openstack_compute_keypair_v2.keypair.name}"
+  ssh_bastion_host   = "${element(module.edge.public_ip_list,0)}"
+  docker_version     = "${var.docker_version}"
+  assign_floating_ip = "${var.storage_assign_floating_ip}"
+  block_storage_size = "${var.storage_volume_size}"
+  block_storage_dev  = "${var.block_storage_dev}"
+  role               = ["worker"]
+
+  labels = {
+    node_type = "storage"
+  }
+}
+
 # Compute dynamic dependencies for RKE provisioning step
 locals {
   rke_cluster_deps = [
@@ -94,6 +119,7 @@ locals {
     "${join(",",module.service.prepare_nodes_id_list)}",      # Service stuff ...
     "${join(",",module.edge.prepare_nodes_id_list)}",         # Edge stuff ...
     "${join(",",module.edge.associate_floating_ip_id_list)}",
+    "${join(",",module.storage.prepare_nodes_id_list)}",      # Storage stuff...
     "${join(",",module.secgroup.rule_id_list)}",              # Other stuff ...
     "${module.network.interface_id}",
   ]
@@ -103,7 +129,7 @@ locals {
 module "rke" {
   source                    = "modules/rke"
   rke_cluster_deps          = "${local.rke_cluster_deps}"
-  node_mappings             = "${concat(module.master.node_mappings,module.service.node_mappings,module.edge.node_mappings)}"
+  node_mappings             = "${concat(module.master.node_mappings,module.service.node_mappings,module.edge.node_mappings, module.storage.node_mappings)}"
   ssh_bastion_host          = "${element(module.edge.public_ip_list,0)}"
   ssh_user                  = "${var.ssh_user}"
   ssh_key                   = "${var.ssh_key}"

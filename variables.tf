@@ -55,6 +55,15 @@ variable edge_count {
   default     = 1
 }
 
+variable storage_flavor_name {
+  description = "Storage node flavor name"
+}
+
+variable storage_count {
+  description = "Number of storage nodes to deploy"
+  default     = 2
+}
+
 variable ignore_docker_version {
   description = "If true RKE won't check Docker version on images"
   default     = false
@@ -90,6 +99,11 @@ variable edge_assign_floating_ip {
   default     = true
 }
 
+variable storage_assign_floating_ip {
+  description = "If true a floating IP is assigned to each storage node"
+  default     = false
+}
+
 variable allowed_ingress_tcp {
   type        = "list"
   description = "Allowed TCP ingress traffic"
@@ -100,4 +114,14 @@ variable allowed_ingress_udp {
   type        = "list"
   description = "Allowed UDP ingress traffic"
   default     = []
+}
+
+variable block_storage_dev {
+  description = "If set this will override the block storage device path returned from the hypervisor"
+  default     = ""
+}
+
+variable storage_volume_size {
+  description = "Volume size for the storage nodes"
+  default     = 50
 }

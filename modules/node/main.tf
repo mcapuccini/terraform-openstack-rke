@@ -38,7 +38,43 @@ resource "openstack_compute_floatingip_associate_v2" "associate_floating_ip" {
   instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
 }
 
-# Prepare nodes for RKE
+# Create block storage (if required)
+resource "openstack_blockstorage_volume_v2" "block_storage" {
+  count = "${var.block_storage_size > 0 ? var.count : 0}"
+  name  = "${var.name_prefix}-volume-${format("%03d", count.index)}"
+  size  = "${var.block_storage_size}"
+}
+
+# Attach block storage (if required)
+resource "openstack_compute_volume_attach_v2" "attach_block_storage" {
+  count       = "${var.block_storage_size > 0 ? var.count : 0}"
+  instance_id = "${element(openstack_compute_instance_v2.instance.*.id, count.index)}"
+  volume_id   = "${element(openstack_blockstorage_volume_v2.block_storage.*.id, count.index)}"
+}
+
+# Prepare nodes via SSH
+locals {
+  docker_prepare = [
+    "curl releases.rancher.com/install-docker/${var.docker_version}.sh | bash",
+    "sudo usermod -a -G docker ${var.ssh_user}",
+  ]
+
+  # Workaround: avoid empty list
+  device_list = "${concat(openstack_compute_volume_attach_v2.attach_block_storage.*.device,list(""))}"
+
+  # Assuming device is the same for every attach
+  volume_dev = "${var.block_storage_dev == "" ? element(local.device_list,0) : var.block_storage_dev}"
+
+  volume_prepare = [
+    "sudo mkfs.ext4 ${local.volume_dev}",
+    "sudo mkdir -p ${var.block_storage_mount}",
+    "sudo mount ${local.volume_dev} ${var.block_storage_mount}",
+  ]
+
+  # Workaround for list not supported in conditionals (https://github.com/hashicorp/terraform/issues/12453)
+  prepare_script = "${concat(local.docker_prepare, split(",",var.block_storage_size > 0 ? join(",",local.volume_prepare) : "#"))}"
+}
+
 resource null_resource "prepare_nodes" {
   count = "${var.count}"
 
@@ -58,10 +94,7 @@ resource null_resource "prepare_nodes" {
       private_key = "${file(var.ssh_key)}"
     }
 
-    inline = [
-      "curl releases.rancher.com/install-docker/${var.docker_version}.sh | bash",
-      "sudo usermod -a -G docker ${var.ssh_user}",
-    ]
+    inline = "${local.prepare_script}"
   }
 }
 

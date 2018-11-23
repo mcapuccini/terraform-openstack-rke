@@ -63,3 +63,18 @@ variable ssh_bastion_host {
   default = "Bastion SSH host (mandatory if assign_floating_ip is false)"
   default = ""
 }
+
+variable block_storage_size {
+  description = "If greater than 0 a block storage volume will be attached to this node"
+  default     = 0
+}
+
+variable block_storage_dev {
+  description = "If set this will override the block storage device path returned from the hypervisor"
+  default     = ""
+}
+
+variable "block_storage_mount" {
+  description = "Block storage mount point"
+  default     = "/media/block_storage"
+}
