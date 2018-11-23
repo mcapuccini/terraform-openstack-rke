@@ -49,6 +49,7 @@ env:
         Awab6UU3ZYdtDdSGaqwHQ3mVHhzqwThdNuYW8vZrhjWo7+nf62SduebsPhimrJqdGPZ
         jmCr/o9OvryHM=
   matrix:
+    # Single master
     - >
       TF_VAR_cluster_prefix=rke-ci-$TRAVIS_BUILD_NUMBER
       TF_VAR_master_count=1
@@ -86,6 +87,12 @@ before_script:
 
 script:
   # Deploy
+  - terraform apply -auto-approve # this also runs sanity checks
+  # Scale up
+  - export TF_VAR_service_count=$((TF_VAR_service_count+1))
+  - terraform apply -auto-approve # this also runs sanity checks
+  # Scale down
+  - export TF_VAR_service_count=$((TF_VAR_service_count-1))
   - terraform apply -auto-approve # this also runs sanity checks
 
 after_script:
