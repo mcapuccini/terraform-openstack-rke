@@ -61,10 +61,42 @@ provider "kubernetes" {
 
 # Configure Helm provider
 provider "helm" {
+  service_account = "tiller"
+  namespace = "kube-system"
+  debug = true
   kubernetes {
     host                   = "${local.api_access}"
     client_certificate     = "${rke_cluster.cluster.client_cert}"
     client_key             = "${rke_cluster.cluster.client_key}"
     cluster_ca_certificate = "${rke_cluster.cluster.ca_crt}"
   }
+}
+
+resource "kubernetes_service_account" "tiller" {
+  metadata {
+    name      = "tiller"
+    namespace = "kube-system"
+  }
+}
+
+resource "kubernetes_cluster_role_binding" "tiller" {
+    depends_on = ["kubernetes_service_account.tiller"]
+    metadata {
+        name = "tiller"
+    }
+    role_ref {
+        api_group = "rbac.authorization.k8s.io"
+        kind = "ClusterRole"
+        name = "cluster-admin"
+    }
+    subject {
+        kind = "User"
+        name = "system:serviceaccount:kube-system:tiller"
+    }
+}
+
+resource "helm_release" "pachyderm" {
+    depends_on = ["kubernetes_cluster_role_binding.tiller"]
+    name      = "test"
+    chart     = "stable/pachyderm"
 }

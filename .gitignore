@@ -5,3 +5,4 @@
 terraform-provider-rke-*
 cluster.yml
 kube_config_cluster.yml
+.DS_Store
