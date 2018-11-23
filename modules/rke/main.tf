@@ -49,3 +49,12 @@ resource "local_file" "custer_yml" {
   filename = "${path.root}/cluster.yml"
   content  = "${rke_cluster.cluster.rke_cluster_yaml}"
 }
+
+# Configure Kubernetes provider
+provider "kubernetes" {
+  host     = "${local.api_access}"
+  username = "${rke_cluster.cluster.kube_admin_user}"
+  client_certificate     = "${rke_cluster.cluster.client_cert}"
+  client_key             = "${rke_cluster.cluster.client_key}"
+  cluster_ca_certificate = "${rke_cluster.cluster.ca_crt}"
+}
