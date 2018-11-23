@@ -90,11 +90,9 @@ script:
   - terraform apply -auto-approve # this also runs sanity checks
   # Scale up
   - export TF_VAR_service_count=$((TF_VAR_service_count+1))
-  - export TF_VAR_service_edge=$((TF_VAR_edge_count+1))
   - terraform apply -auto-approve # this also runs sanity checks
   # Scale down
   - export TF_VAR_service_count=$((TF_VAR_service_count-1))
-  - export TF_VAR_service_edge=$((TF_VAR_edge_count-1))
   - terraform apply -auto-approve # this also runs sanity checks
 
 after_script:
