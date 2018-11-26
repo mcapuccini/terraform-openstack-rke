@@ -44,7 +44,7 @@ resource local_file "kube_config_cluster" {
   content = "${replace(rke_cluster.cluster.kube_config_yaml, local.api_access_regex, local.api_access)}"
 }
 
-resource "local_file" "custer_yml" {
+resource local_file "custer_yml" {
   count    = "${var.write_cluster_yaml ? 1 : 0}"
   filename = "${path.root}/cluster.yml"
   content  = "${rke_cluster.cluster.rke_cluster_yaml}"
@@ -62,8 +62,8 @@ provider "kubernetes" {
 # Configure Helm provider
 provider "helm" {
   service_account = "tiller"
-  namespace = "kube-system"
-  debug = true
+  namespace       = "kube-system"
+  install_tiller  = false
   kubernetes {
     host                   = "${local.api_access}"
     client_certificate     = "${rke_cluster.cluster.client_cert}"
@@ -95,8 +95,18 @@ resource "kubernetes_cluster_role_binding" "tiller" {
     }
 }
 
-resource "helm_release" "pachyderm" {
-    depends_on = ["kubernetes_cluster_role_binding.tiller"]
-    name      = "test"
+resource null_resource "tiller" {
+  depends_on = ["kubernetes_cluster_role_binding.tiller"]
+  provisioner "local-exec" {
+    environment {
+      KUBECONFIG = "${path.root}/kube_config_cluster.yml"
+    }
+    command = "helm init --service-account tiller --wait"
+  }
+}
+
+resource helm_release "pachyderm" {
+    depends_on = ["null_resource.tiller"]
+    name      = "pachyderm-release"
     chart     = "stable/pachyderm"
 }
