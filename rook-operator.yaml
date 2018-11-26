@@ -1,0 +1,22 @@
+image:
+  tag: v0.8.3
+  prefix: rook
+  repository: rook/ceph
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+agent:
+  flexVolumeDirPath: "/usr/libexec/kubernetes/kubelet-plugins/volume/exec/"
+
+rbacEnable: true
+pspEnable: true
+nodeSelector:
+  node_type: service
+logLevel: "INFO"
