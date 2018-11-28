@@ -112,3 +112,12 @@ module "rke" {
   write_kube_config_cluster = "${var.write_kube_config_cluster}"
   write_cluster_yaml        = "${var.write_cluster_yaml}"
 }
+
+# Create DNS records if required (TODO: split proxied and not, enable is not needed)
+resource "cloudflare_record" "dns_record" {
+  count  = "${var.cloudflare_enable ? var.edge_count : 0}"
+  domain = "${var.cloudflare_domain}"
+  name   = "${var.cloudflare_record_name}"
+  value  = "${element(module.edge.public_ip_list, count.index)}"
+  type   = "A"
+}

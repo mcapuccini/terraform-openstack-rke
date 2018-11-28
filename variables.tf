@@ -101,3 +101,33 @@ variable allowed_ingress_udp {
   description = "Allowed UDP ingress traffic"
   default     = []
 }
+
+variable cloudflare_enable {
+  description = "If true it enables Cloudflare dynamic DNS (for this to work CLOUDFLARE_EMAIL and CLOUDFLARE_TOKEN should be set in your environment)"
+  default     = false
+}
+
+variable cloudflare_domain {
+  description = "Cloudflare domain to add the DNS records to (required if enable_cloudflare=true)"
+  default     = ""
+}
+
+variable cloudflare_record_name {
+  description = "Name for the DNS records to add (these will point to the edge nodes, you typically want a wildcard)"
+  default     = "*.rke"
+}
+
+variable acme_server_url {
+  description = "ACME server URL"
+  default     = "https://acme-staging-v02.api.letsencrypt.org/directory"
+}
+
+variable acme_registration_email {
+  description = "Email for ACME registration (required if acme_enable is true)"
+  default     = ""
+}
+
+variable acme_enable {
+  description = "If false ACME provisioning will be skipped (if enabled cloudflare_enable must be also true)"
+  default     = false
+}
