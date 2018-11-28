@@ -113,7 +113,7 @@ module "rke" {
   write_cluster_yaml        = "${var.write_cluster_yaml}"
 }
 
-# Create DNS records if required (TODO: split proxied and not, enable is not needed)
+# Create DNS records if required (TODO: add proxied option, enable is not needed)
 resource "cloudflare_record" "dns_record" {
   count  = "${var.cloudflare_enable ? var.edge_count : 0}"
   domain = "${var.cloudflare_domain}"
