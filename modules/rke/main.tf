@@ -3,19 +3,19 @@ resource rke_cluster "cluster" {
 
   cloud_provider {
       name = "openstack"
-      openstackCloudProvider = {
+      openstack_cloud_config = {
         global = {
           username = "${var.os_username}"
           password = "${var.os_password}"
-          auth-url = "${var.os_auth_url}"
-          tenant-id = "${var.os_tenant_id}"
-          tenant-name = "${var.os_tenant_name}"
-          domain-name = "${var.os_domain_name}"
+          auth_url = "${var.os_auth_url}"
+          tenant_id = "${var.os_tenant_id}"
+          tenant_name = "${var.os_tenant_name}"
+          domain_name = "${var.os_domain_name}"
         }
         block_storage = {
-          bs-version = "auto"
-          ignore-volume-az = "false"
-          trust-device-path = "false"
+          bs_version = "auto"
+          ignore_volume_az = "false"
+          trust_device_path = "false"
         }
       }
     }
