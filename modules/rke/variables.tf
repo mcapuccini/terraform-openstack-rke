@@ -36,3 +36,27 @@ variable "rke_cluster_deps" {
   type        = "list"
   description = "List of resources that will delay creation and deletion of the RKE provisioning resource (provide a resource output for each)"
 }
+
+variable os_username {
+  description = "Openstack user name"
+}
+
+variable os_password {
+  description = "Openstack tenancy password"
+}
+
+variable os_auth_url {
+  description = "Openstack auth url"
+}
+
+variable os_tenant_id {
+  description = "Openstack tenant/project id"
+}
+
+variable os_tenant_name {
+  description = "Openstack tenant/project name"
+}
+
+variable os_domain_name {
+  description = "Openstack domain name"
+}

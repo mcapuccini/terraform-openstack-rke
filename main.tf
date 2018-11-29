@@ -111,4 +111,10 @@ module "rke" {
   ignore_docker_version     = "${var.ignore_docker_version}"
   write_kube_config_cluster = "${var.write_kube_config_cluster}"
   write_cluster_yaml        = "${var.write_cluster_yaml}"
+  os_username               = "${var.os_username}"
+  os_password               = "${var.os_password}"
+  os_auth_url               = "${var.os_auth_url}"
+  os_tenant_id              = "${var.os_tenant_id}"
+  os_tenant_name            = "${var.os_tenant_name}"
+  os_domain_name            = "${var.os_domain_name}"
 }

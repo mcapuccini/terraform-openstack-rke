@@ -1,5 +1,25 @@
 # Provision RKE
 resource rke_cluster "cluster" {
+
+  cloud_provider {
+      name = "openstack"
+      openstackCloudProvider = {
+        global = {
+          username = "${var.os_username}"
+          password = "${var.os_password}"
+          auth-url = "${var.os_auth_url}"
+          tenant-id = "${var.os_tenant_id}"
+          tenant-name = "${var.os_tenant_name}"
+          domain-name = "${var.os_domain_name}"
+        }
+        block_storage = {
+          bs-version = "auto"
+          ignore-volume-az = "false"
+          trust-device-path = "false"
+        }
+      }
+    }
+
   nodes_conf = ["${var.node_mappings}"]
 
   bastion_host = {

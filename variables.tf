@@ -101,3 +101,28 @@ variable allowed_ingress_udp {
   description = "Allowed UDP ingress traffic"
   default     = []
 }
+
+variable os_username {
+  description = "Openstack user name"
+}
+
+variable os_password {
+  description = "Openstack tenancy password"
+  default     = ""
+}
+
+variable os_auth_url {
+  description = "Openstack auth url"
+}
+
+variable os_tenant_id {
+  description = "Openstack tenant/project id"
+}
+
+variable os_tenant_name {
+  description = "Openstack tenant/project name"
+}
+
+variable os_domain_name {
+  description = "Openstack domain name"
+}
