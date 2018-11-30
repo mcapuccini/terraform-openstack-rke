@@ -12,7 +12,7 @@ variable cloudflare_record_name {
 }
 
 variable dns_value_list {
-  type = "list"
+  type        = "list"
   description = "List of DNS values (an A record will be created for each fo these)"
 }
 
