@@ -121,7 +121,7 @@ resource null_resource "tiller" {
     environment {
       KUBECONFIG = "${path.root}/kube_config_cluster.yml"
     }
-    command = "helm init --service-account tiller --wait"
+    command = "helm init --service-account tiller --wait && helm repo update"
   }
 }
 
