@@ -137,6 +137,7 @@ resource "kubernetes_storage_class" "cinder" {
 
 resource helm_release "minio" {
     depends_on = ["null_resource.tiller","kubernetes_storage_class.cinder" ]
+    version   = "0.1.8"
     name      = "minio-release"
     chart     = "stable/minio"
     values = [
@@ -144,11 +145,12 @@ resource helm_release "minio" {
   ]
 }
 
-#resource helm_release "pachyderm" {
-#    depends_on = ["helm_release.minio","kubernetes_storage_class.cinder"]
-#    name      = "pachyderm-release"
-#    chart     = "stable/pachyderm"
-#    values = [
-#    "${file("${path.module}/helm/pachyderm/values.yaml")}",
-#  ]
-#}
+resource helm_release "pachyderm" {
+    depends_on = ["helm_release.minio","kubernetes_storage_class.cinder"]
+    version   = "1.9.1"
+    name      = "pachyderm-release"
+    chart     = "stable/pachyderm"
+    values = [
+    "${file("${path.module}/helm/pachyderm/values.yaml")}",
+  ]
+}

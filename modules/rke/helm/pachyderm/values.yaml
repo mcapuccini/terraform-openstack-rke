@@ -12,7 +12,7 @@ s3:
  secretKey: "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
  bucketName: "mybucket"
  ## The endpoint should be something like: <mydomain>.<subdomain>:<port>
- endpoint: "minio-release-minio-svc.default.svc.cluster.local:9000"
+ endpoint: "minio-release.default.svc.cluster.local:9000"
  ## For 'true' set the value to 1
  secure: "0"
  ## For 'S3v2' signature, set the value to 1. For 'S3v4', set this value to 0

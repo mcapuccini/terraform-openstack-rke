@@ -18,11 +18,6 @@ mcImage:
 ##
 mode: "distributed"
 
-## Pod priority settings
-## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
-##
-# priorityClassName: ""
-
 ## Set default accesskey, secretkey, Minio config file path, volume mount path and
 ## number of nodes (only used for Minio distributed mode)
 ## Distributed Minio ref: https://docs.minio.io/docs/distributed-minio-quickstart-guide
@@ -63,23 +58,6 @@ persistence:
   ##
   # subPath: ""
 
-## Expose the Minio service to be accessed from outside the cluster (LoadBalancer service).
-## or access it from within the cluster (ClusterIP service). Set the service type and the port to serve it.
-## ref: http://kubernetes.io/docs/user-guide/services/
-##
-
-service:
-  type: ClusterIP
-  clusterIP: ~
-  port: 9000
-  # nodePort: 31311
-  # externalIPs:
-  #   - externalIp1
-  annotations: {}
-    # prometheus.io/scrape: 'true'
-    # prometheus.io/path:   '/minio/prometheus/metrics'
-    # prometheus.io/port:   '9000'
-
 ingress:
   enabled: true
   annotations: {
@@ -88,7 +66,7 @@ ingress:
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - minio.ip.nip.io
+    - minio
   # tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -120,7 +98,7 @@ networkPolicy:
 ## Create a bucket after minio install
 ##
 defaultBucket:
-  enabled: false
+  enabled: true
   ## If enabled, must be a string with length > 0
   name: "mybucket"
   ## Can be one of none|download|upload|public
