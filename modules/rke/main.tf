@@ -137,7 +137,7 @@ resource "kubernetes_storage_class" "cinder" {
 
 resource helm_release "minio" {
     depends_on = ["null_resource.tiller","kubernetes_storage_class.cinder" ]
-    version   = "0.1.8"
+    version   = "1.9.1"
     name      = "minio-release"
     chart     = "stable/minio"
     values = [
@@ -147,7 +147,7 @@ resource helm_release "minio" {
 
 resource helm_release "pachyderm" {
     depends_on = ["helm_release.minio","kubernetes_storage_class.cinder"]
-    version   = "1.9.1"
+    version   = "0.1.8"
     name      = "pachyderm-release"
     chart     = "stable/pachyderm"
     values = [
