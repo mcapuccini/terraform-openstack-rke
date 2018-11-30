@@ -16,6 +16,8 @@ env:
     - TERRAFORM_VERSION=0.11.10
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
+    - KUBECTL_VERSION=v1.12.3
+    - HEML_VERSION=v2.10.0
     # SSH
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
@@ -76,6 +78,14 @@ install:
   - ssh-keygen -t rsa -N '' -f ssh_key
   - eval "$(ssh-agent -s)"
   - ssh-add ssh_key
+  # Install kubectl
+  - curl -LO https://storage.googleapis.com/kubernetes-release/release/${KUBECTL_VERSION}/bin/linux/amd64/kubectl
+  - chmod +x ./kubectl
+  - sudo mv ./kubectl /usr/local/bin/kubectl
+  # Install helm
+  - curl -LO https://kubernetes-helm.storage.googleapis.com/helm-${HELM_VERSION}-linux-amd64.tar.gz
+  - tar -xf ./helm-v2.10.0-linux-amd64.tar.gz -C /tmp/
+  - sudo mv /tmp/linux-amd64/helm /usr/local/bin/
 
 before_script:
   # Terraform init, validate, and format check
