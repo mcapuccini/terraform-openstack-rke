@@ -65,6 +65,7 @@ provider "helm" {
   service_account = "tiller"
   namespace       = "kube-system"
   install_tiller  = false
+
   kubernetes {
     host                   = "${local.api_access}"
     client_certificate     = "${rke_cluster.cluster.client_cert}"
@@ -81,27 +82,32 @@ resource "kubernetes_service_account" "tiller" {
 }
 
 resource "kubernetes_cluster_role_binding" "tiller" {
-    depends_on = ["kubernetes_service_account.tiller"]
-    metadata {
-        name = "tiller"
-    }
-    role_ref {
-        api_group = "rbac.authorization.k8s.io"
-        kind = "ClusterRole"
-        name = "cluster-admin"
-    }
-    subject {
-        kind = "User"
-        name = "system:serviceaccount:kube-system:tiller"
-    }
+  depends_on = ["kubernetes_service_account.tiller"]
+
+  metadata {
+    name = "tiller"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind      = "ClusterRole"
+    name      = "cluster-admin"
+  }
+
+  subject {
+    kind = "User"
+    name = "system:serviceaccount:kube-system:tiller"
+  }
 }
 
 resource null_resource "tiller" {
   depends_on = ["kubernetes_cluster_role_binding.tiller"]
+
   provisioner "local-exec" {
     environment {
       KUBECONFIG = "${path.root}/kube_config_cluster.yml"
     }
+
     command = "helm init --service-account tiller --wait"
   }
 }
