@@ -101,3 +101,28 @@ variable allowed_ingress_udp {
   description = "Allowed UDP ingress traffic"
   default     = []
 }
+
+variable cloudflare_enable {
+  description = "If true it enables Cloudflare dynamic DNS (for this to work CLOUDFLARE_EMAIL and CLOUDFLARE_TOKEN should be set in your environment)"
+  default     = false
+}
+
+variable cloudflare_domain {
+  description = "Cloudflare domain to add the DNS records to (required if enable_cloudflare=true)"
+  default     = ""
+}
+
+variable cloudflare_record_name {
+  description = "Name for the DNS records to add (these will point to the edge nodes, you typically want a wildcard)"
+  default     = "*.rke"
+}
+
+variable cloudflare_email {
+  description = "Cloudflare account email (required if enable_cloudflare=true)"
+  default     = "null"
+}
+
+variable cloudflare_api_key {
+  description = "Cloudflare API key (required if enable_cloudflare=true)"
+  default     = "null"
+}

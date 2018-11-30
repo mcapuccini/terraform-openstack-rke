@@ -112,3 +112,15 @@ module "rke" {
   write_kube_config_cluster = "${var.write_kube_config_cluster}"
   write_cluster_yaml        = "${var.write_cluster_yaml}"
 }
+
+# Create DNS records if required
+module "cloudflare" {
+  source                 = "modules/cloudflare"
+  cloudflare_enable      = "${var.cloudflare_enable}"
+  cloudflare_domain      = "${var.cloudflare_domain}"
+  cloudflare_record_name = "${var.cloudflare_record_name}"
+  dns_value_list         = "${module.edge.public_ip_list}"
+  dns_record_count       = "${var.edge_count}"
+  cloudflare_email       = "${var.cloudflare_email}"
+  cloudflare_api_key     = "${var.cloudflare_api_key}"
+}
