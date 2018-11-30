@@ -119,10 +119,10 @@ variable cloudflare_record_name {
 
 variable cloudflare_email {
   description = "Cloudflare account email (required if enable_cloudflare=true)"
-  default     = ""
+  default     = "null"
 }
 
 variable cloudflare_api_key {
   description = "Cloudflare API key (required if enable_cloudflare=true)"
-  default     = ""
+  default     = "null"
 }
