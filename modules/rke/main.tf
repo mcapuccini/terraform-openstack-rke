@@ -144,11 +144,11 @@ resource helm_release "minio" {
   ]
 }
 
-resource helm_release "pachyderm" {
-    depends_on = ["helm_release.minio","kubernetes_storage_class.cinder"]
-    name      = "pachyderm-release"
-    chart     = "stable/pachyderm"
-    values = [
-    "${file("${path.module}/helm/pachyderm/values.yaml")}",
-  ]
-}
+#resource helm_release "pachyderm" {
+#    depends_on = ["helm_release.minio","kubernetes_storage_class.cinder"]
+#    name      = "pachyderm-release"
+#    chart     = "stable/pachyderm"
+#    values = [
+#    "${file("${path.module}/helm/pachyderm/values.yaml")}",
+#  ]
+#}

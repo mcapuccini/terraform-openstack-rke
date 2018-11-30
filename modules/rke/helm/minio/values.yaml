@@ -2,7 +2,7 @@
 ##
 image:
   repository: minio/minio
-  tag: RELEASE.2018-10-18T00-28-58Z
+  tag: RELEASE.2018-11-22T02-51-56Z
   pullPolicy: IfNotPresent
 
 ## Set default image, imageTag, and imagePullPolicy for the `mc` (the minio
@@ -10,7 +10,7 @@ image:
 ##
 mcImage:
   repository: minio/mc
-  tag: RELEASE.2018-10-18T00-40-05Z
+  tag: RELEASE.2018-11-06T01-12-20Z
   pullPolicy: IfNotPresent
 
 ## minio server mode, i.e. standalone or distributed.
@@ -21,7 +21,7 @@ mode: "distributed"
 ## Pod priority settings
 ## ref: https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
 ##
-priorityClassName: ""
+# priorityClassName: ""
 
 ## Set default accesskey, secretkey, Minio config file path, volume mount path and
 ## number of nodes (only used for Minio distributed mode)
@@ -82,13 +82,14 @@ service:
 
 ingress:
   enabled: true
-  annotations: {}
-    # kubernetes.io/ingress.class: nginx
+  annotations: {
+    kubernetes.io/ingress.class: nginx
+  }
     # kubernetes.io/tls-acme: "true"
   path: /
   hosts:
-    - chart-example.local
-  tls: []
+    - minio.ip.nip.io
+  # tls: []
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
@@ -100,21 +101,6 @@ nodeSelector: {}
 tolerations: []
 affinity: {}
 
-## Liveness and Readiness probe values.
-## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-probes/
-livenessProbe:
-  initialDelaySeconds: 5
-  periodSeconds: 30
-  timeoutSeconds: 1
-  successThreshold: 1
-  failureThreshold: 3
-readinessProbe:
-  initialDelaySeconds: 5
-  periodSeconds: 15
-  timeoutSeconds: 1
-  successThreshold: 1
-  failureThreshold: 3
-
 ## Configure resource requests and limits
 ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
 ##
@@ -123,12 +109,20 @@ resources:
     memory: 256Mi
     cpu: 250m
 
+environment:
+  ## To disable Minio Browser, set this value to off
+  MINIO_BROWSER: "on"
+
+networkPolicy:
+  enabled: false
+  allowExternal: true
+
 ## Create a bucket after minio install
 ##
 defaultBucket:
-  enabled: true
+  enabled: false
   ## If enabled, must be a string with length > 0
-  name: mybucket
+  name: "mybucket"
   ## Can be one of none|download|upload|public
   policy: none
   ## Purge if bucket exists already
