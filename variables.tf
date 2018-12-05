@@ -128,10 +128,10 @@ variable cloudflare_api_key {
 }
 
 variable "acme_reg_email" {
-  description = "ACME registration email"
+  description = "ACME registration email (for Let's Encrypt or similar, registration is automatic)"
 }
 
 variable "acme_server_url" {
-  description = "ACME server URL"
+  description = "ACME server URL (default: Let's Encrypt staging)"
   default     = "https://acme-staging-v02.api.letsencrypt.org/directory"
 }
