@@ -126,3 +126,12 @@ variable cloudflare_api_key {
   description = "Cloudflare API key (required if enable_cloudflare=true)"
   default     = "null"
 }
+
+variable "acme_reg_email" {
+  description = "ACME registration email"
+}
+
+variable "acme_server_url" {
+  description = "ACME server URL"
+  default     = "https://acme-staging-v02.api.letsencrypt.org/directory"
+}

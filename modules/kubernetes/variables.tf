@@ -36,3 +36,11 @@ variable "rke_cluster_deps" {
   type        = "list"
   description = "List of resources that will delay creation and deletion of the RKE provisioning resource (provide a resource output for each)"
 }
+
+variable "acme_reg_email" {
+  description = "ACME registration email"
+}
+
+variable "acme_server_url" {
+  description = "ACME server URL"
+}

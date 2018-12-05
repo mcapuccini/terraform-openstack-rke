@@ -111,3 +111,47 @@ resource null_resource "tiller" {
     command = "helm init --service-account tiller --wait"
   }
 }
+
+# Setup cert-manager
+resource "helm_release" "cert-manager" {
+  depends_on = ["null_resource.tiller"]
+  name       = "cert-manager"
+  chart      = "stable/cert-manager"
+  namespace  = "ingress-nginx"
+
+  set {
+    name  = "ingressShim.defaultIssuerName"
+    value = "nginx-issuer"
+  }
+
+  set {
+    name  = "ingressShim.defaultIssuerKind"
+    value = "ClusterIssuer"
+  }
+
+  # Add issuer
+  # Workaround: https://github.com/terraform-providers/terraform-provider-kubernetes/issues/215
+  provisioner "local-exec" {
+    environment {
+      KUBECONFIG = "${path.root}/kube_config_cluster.yml"
+    }
+
+    command = <<COMMAND
+cat << EOF| kubectl create -n ingress-nginx -f -
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: ClusterIssuer
+metadata:
+  name: nginx-issuer
+  namespace: ingress-nginx
+spec:
+  acme:
+    server: ${var.acme_server_url}
+    email: ${var.acme_reg_email}
+    privateKeySecretRef:
+      name: nginx-issuer
+    http01:
+      ingressClass: nginx
+EOF
+COMMAND
+  }
+}

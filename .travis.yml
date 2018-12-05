@@ -17,7 +17,7 @@ env:
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
     - KUBECTL_VERSION=v1.12.3
-    - HEML_VERSION=v2.10.0
+    - HEML_VERSION=v2.11.0
     # SSH
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
@@ -35,6 +35,8 @@ env:
     - TF_VAR_master_flavor_name="s1.large"
     - TF_VAR_service_flavor_name="s1.large"
     - TF_VAR_edge_flavor_name="s1.large"
+    # ACME
+    - TF_VAR_acme_reg_email="marco.capuccini@it.uu.se"
     - secure: >
         utajVM7Lv1UNBYG4+uCm/vW7kr9cbDfRdjOMaqYFtzX0+rR/YICiNZ0SLJRUovFQ8YQ
         3p6grN0tkswuN3o1qde9cXC9XpJvjQMZXNELRlNyBBvo0k5t+x7pFCtD6OwXCzOCrDE

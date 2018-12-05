@@ -100,8 +100,8 @@ locals {
 }
 
 # Provision Kubernetes
-module "rke" {
-  source                    = "modules/rke"
+module "kuberentes" {
+  source                    = "modules/kubernetes"
   rke_cluster_deps          = "${local.rke_cluster_deps}"
   node_mappings             = "${concat(module.master.node_mappings,module.service.node_mappings,module.edge.node_mappings)}"
   ssh_bastion_host          = "${element(module.edge.public_ip_list,0)}"
@@ -111,6 +111,8 @@ module "rke" {
   ignore_docker_version     = "${var.ignore_docker_version}"
   write_kube_config_cluster = "${var.write_kube_config_cluster}"
   write_cluster_yaml        = "${var.write_cluster_yaml}"
+  acme_reg_email            = "${var.acme_reg_email}"
+  acme_server_url           = "${var.acme_server_url}"
 }
 
 # Create DNS records if required

@@ -53,6 +53,7 @@ module "rke" {
   service_count=2 # Number of service nodes to deploy
   edge_flavor_name="" # Edge node flavor name (edge nodes run ingress controller and balance the API)
   edge_count=1 # Number of edge nodes to deploy (should be at least 1)
+  acme_reg_email="" # ACME registration email (for Let's Encrypt or similar, registration is automatic)
 }
 ```
 
