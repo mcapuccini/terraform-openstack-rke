@@ -17,7 +17,7 @@ env:
     - YAMLLINT_VERSION=1.8.1
     - TERRAFORM_PROVIDER_RKE_VERSION=0.5.0
     - KUBECTL_VERSION=v1.12.3
-    - HEML_VERSION=v2.10.0
+    - HELM_VERSION=v2.10.0
     # SSH
     - TF_VAR_ssh_key="ssh_key"
     - TF_VAR_ssh_key_pub="ssh_key.pub"
