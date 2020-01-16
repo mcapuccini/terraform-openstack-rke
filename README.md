@@ -6,6 +6,8 @@
 
 [Terraform](https://www.terraform.io/) module to deploy [Kubernetes](https://kubernetes.io) with [RKE](https://rancher.com/docs/rke/v0.1.x/en/) on [OpenStack](https://www.openstack.org/).
 
+An updated version for Terraform 0.12+ and newest terraform-rke-provider is available [here](https://github.com/remche/terraform-openstack-rke).
+
 ## Table of contents
 - [Prerequisites](#prerequisites)
 - [Configuration](#configuration)
